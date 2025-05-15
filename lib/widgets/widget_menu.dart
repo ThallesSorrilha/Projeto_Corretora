@@ -1,36 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/widgets/componentes/widget_gaveta.dart';
 import '../configuracao/rotas.dart';
+import 'componentes/widget_botao_icone_desc.dart';
+import 'componentes/widget_icone_desc.dart';
 
 class WidgetMenu extends StatelessWidget {
   const WidgetMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Widget criarMenu({required IconData icone,required String rotulo,required String rota}){
-      return ListTile(
-        leading: Icon(icone),
-        title: Text(rotulo),
-        onTap: () => Navigator.pushNamed(context, rota),
-      );
-    }
     return Scaffold(
-      appBar: AppBar(title: const Text('Menu Principal')),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+      appBar: AppBar(
+        title: const Text('Menu Principal'),
+        backgroundColor: Colors.lightGreen,
+      ),
+      drawer: WidgetGaveta(),
+      body: const Center(
+        child: Column(
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Menu', style: TextStyle(color: Colors.white, fontSize: 24)),
+            WidgetBotaoDescricao(
+              icone: Icons.dark_mode,
+              descricao: "Modo Noturno",
             ),
-            criarMenu(icone: Icons.map, rotulo: 'Cadastro de Estado', rota: Rotas.estado),
-            criarMenu(icone: Icons.location_city, rotulo: 'Cadastro de Cidade', rota: Rotas.cidade),
-            criarMenu(icone: Icons.person, rotulo: 'Cadastro de Pessoa', rota: Rotas.pessoa),
+            WidgetIconeDesc(icone: Icons.download, descricao: "Baixar"),
           ],
         ),
-      ),
-      body: const Center(
-        child: Text('Bem-vindo ao App de Cadastro!'),
       ),
     );
   }

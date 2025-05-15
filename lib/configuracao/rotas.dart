@@ -1,6 +1,9 @@
 class Rotas {
   static const home = '/';
-  static const estado = '/estado';
-  static const cidade = '/cidade';
-  static const pessoa = '/pessoa';
+  static const login = '/login';
+  static const usuarioCadastro = '/cadastar-usuario';
+  static const usuario = '/usuario';
+  static const logout = '/logout';
+  static const casaBuscar = '/buscar-casa';
+  static const casaCadastrar = '/cadastrar-casa';
 }
