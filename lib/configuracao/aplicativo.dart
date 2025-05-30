@@ -15,10 +15,9 @@ class Aplicativo extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: Rotas.home,
       routes: {
-        Rotas.home: (context) => FormularioPessoa(),
-        //Rotas.home: (context) => const WidgetMenu(),
+        Rotas.home: (context) => const WidgetMenu(),
         Rotas.login: (context) => const WidgetMenu(),
-        Rotas.usuarioCadastro: (context) => const WidgetMenu(),
+        Rotas.usuarioCadastro: (context) => FormularioPessoa(),
         Rotas.usuario: (context) => const WidgetMenu(),
         Rotas.logout: (context) => const WidgetMenu(),
         Rotas.casaBuscar: (context) => const WidgetMenu(),

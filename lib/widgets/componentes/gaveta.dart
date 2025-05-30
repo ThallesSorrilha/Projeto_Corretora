@@ -45,6 +45,11 @@ class WidgetGaveta extends StatelessWidget {
             rota: Rotas.usuario,
           ),
           criarMenu(icone: Icons.logout, rotulo: 'Logout', rota: Rotas.logout),
+          criarMenu(
+            icone: Icons.add_reaction,
+            rotulo: 'Cadastrar Usuário',
+            rota: Rotas.usuarioCadastro,
+          ),
         ],
       ),
     );
