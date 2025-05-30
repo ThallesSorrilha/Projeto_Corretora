@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_corretora/widgets/widget_casa2.dart';
+import 'package:projeto_corretora/widgets/formulario_casa2.dart';
 import '../configuracao/rotas.dart';
-import '../widgets/widget_menu.dart';
-import '../widgets/widget_casa_cadastro.dart';
+import '../widgets/menu.dart';
+import '../widgets/cadastro_casa.dart';
 
 class Aplicativo extends StatelessWidget {
   const Aplicativo({key}) : super(key: key);

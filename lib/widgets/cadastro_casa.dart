@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_corretora/widgets/componentes/widget_botao_icone_desc.dart';
-import 'package:projeto_corretora/widgets/componentes/widget_icone_desc.dart';
+import 'package:projeto_corretora/widgets/componentes/botao_icone_desc.dart';
+import 'package:projeto_corretora/widgets/componentes/icone_desc.dart';
 
 class WidgetCasaCadastro extends StatefulWidget {
   @override

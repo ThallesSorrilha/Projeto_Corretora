@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_corretora/widgets/componentes/widget_gaveta.dart';
+import 'package:projeto_corretora/widgets/componentes/gaveta.dart';
 import '../configuracao/rotas.dart';
-import 'componentes/widget_botao_icone_desc.dart';
-import 'componentes/widget_icone_desc.dart';
+import 'componentes/botao_icone_desc.dart';
+import 'componentes/icone_desc.dart';
 
 class WidgetMenu extends StatelessWidget {
   const WidgetMenu({super.key});
