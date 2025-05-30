@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/widgets/widget_casa2.dart';
 import '../configuracao/rotas.dart';
 import '../widgets/widget_menu.dart';
 import '../widgets/widget_casa_cadastro.dart';
@@ -14,7 +15,8 @@ class Aplicativo extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: Rotas.home,
       routes: {
-        Rotas.home: (context) => const WidgetMenu(),
+        Rotas.home: (context) => FormularioPessoa(),
+        //Rotas.home: (context) => const WidgetMenu(),
         Rotas.login: (context) => const WidgetMenu(),
         Rotas.usuarioCadastro: (context) => const WidgetMenu(),
         Rotas.usuario: (context) => const WidgetMenu(),
