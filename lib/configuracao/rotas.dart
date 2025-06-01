@@ -6,4 +6,6 @@ class Rotas {
   static const logout = '/logout';
   static const casaBuscar = '/buscar-casa';
   static const casaCadastrar = '/cadastrar-casa';
+  static const estadoCadastrar = '/cadastrar-estado';
+  static const cidadeCadastrar = '/cadastrar-cidade';
 }

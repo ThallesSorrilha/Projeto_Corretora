@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/widgets/formulario_cidade.dart';
+import 'package:projeto_corretora/widgets/formulario_estado.dart';
 import '../configuracao/rotas.dart';
 import '../widgets/menu.dart';
 import 'package:projeto_corretora/widgets/formulario_pessoa.dart';
@@ -22,6 +24,8 @@ class Aplicativo extends StatelessWidget {
         Rotas.logout: (context) => const WidgetMenu(),
         Rotas.casaBuscar: (context) => const WidgetMenu(),
         Rotas.casaCadastrar: (context) => FormularioCasa(),
+        Rotas.estadoCadastrar: (context) => FormularioEstado(),
+        Rotas.cidadeCadastrar: (context) => FormularioCidade(),
       },
     );
   }
