@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_corretora/widgets/formulario_casa2.dart';
 import '../configuracao/rotas.dart';
 import '../widgets/menu.dart';
-import '../widgets/cadastro_casa.dart';
+import 'package:projeto_corretora/widgets/formulario_pessoa.dart';
+import 'package:projeto_corretora/widgets/formulario_casa.dart';
 
 class Aplicativo extends StatelessWidget {
   const Aplicativo({key}) : super(key: key);
@@ -21,7 +21,7 @@ class Aplicativo extends StatelessWidget {
         Rotas.usuario: (context) => const WidgetMenu(),
         Rotas.logout: (context) => const WidgetMenu(),
         Rotas.casaBuscar: (context) => const WidgetMenu(),
-        Rotas.casaCadastrar: (context) => WidgetCasaCadastro(),
+        Rotas.casaCadastrar: (context) => FormularioCasa(),
       },
     );
   }

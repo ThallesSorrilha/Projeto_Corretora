@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
 
-class FormularioPessoa extends StatefulWidget {
+class FormularioCasa extends StatefulWidget {
   @override
-  _FormularioPessoaState createState() => _FormularioPessoaState();
+  _FormularioCasaState createState() => _FormularioCasaState();
 }
 
-class _FormularioPessoaState extends State<FormularioPessoa> {
+class _FormularioCasaState extends State<FormularioCasa> {
   final _formKey = GlobalKey<FormState>();
 
+  /*
+  Cidade
+  Bairro
+  Logradouro
+  Número
+  Tipo
+  Área
+  Preço
+  */
+
   // Controllers para os campos de texto
-  final TextEditingController _nomeController = TextEditingController();
-  final TextEditingController _sobrenomeController = TextEditingController();
-  final TextEditingController _telefoneController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _bairroController = TextEditingController();
+  final TextEditingController _logradouroController = TextEditingController();
+  final TextEditingController _numeroController = TextEditingController();
+  final TextEditingController _tipoController = TextEditingController();
+  final TextEditingController _areaController = TextEditingController();
+  final TextEditingController _precoController = TextEditingController();
 
   // Campos de seleção
   String? _cidade;
@@ -27,22 +39,24 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastro de Usuário')),
+      appBar: AppBar(title: Text('Cadastro de Casa')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              _buildTextField(_nomeController, 'Nome'),
-              _buildTextField(_sobrenomeController, 'Sobrenome'),
-              _buildTextField(_telefoneController, 'Telefone'),
-              _buildTextField(_emailController, 'E-mail'),
               _buildDropdownField('Cidade', cidades, (value) {
                 setState(() {
                   _cidade = value;
                 });
               }, _cidade),
+              _buildTextField(_bairroController, 'Bairro'),
+              _buildTextField(_logradouroController, 'Logradouro'),
+              _buildTextField(_numeroController, 'Nº'),
+              _buildTextField(_tipoController, 'Tipo'),
+              _buildTextField(_areaController, 'Área'),
+              _buildTextField(_precoController, 'Preço'),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -86,7 +100,7 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
     String label,
     List<String> options,
     ValueChanged<String?> onChanged,
-    String? selectionField
+    String? selectionField,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

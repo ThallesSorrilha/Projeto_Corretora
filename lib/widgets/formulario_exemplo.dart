@@ -13,21 +13,27 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
   final TextEditingController _sobrenomeController = TextEditingController();
   final TextEditingController _telefoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
 
   // Campos de seleção
   String? _cidade;
+  String? _estado;
+  bool? _isAtivo;
 
   // Dados pré-definidos para as opções
   final List<String> cidades = [
     'São Paulo',
     'Rio de Janeiro',
-    'Belo Horizonte',
+    'Belo Horizonte'
   ];
+  final List<String> estados = ['SP', 'RJ', 'MG'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastro de Usuário')),
+      appBar: AppBar(
+        title: Text('Cadastro de Pessoa'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -38,20 +44,28 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
               _buildTextField(_sobrenomeController, 'Sobrenome'),
               _buildTextField(_telefoneController, 'Telefone'),
               _buildTextField(_emailController, 'E-mail'),
+              _buildTextField(_cpfController, 'CPF'),
               _buildDropdownField('Cidade', cidades, (value) {
                 setState(() {
                   _cidade = value;
                 });
-              }, _cidade),
+              }),
+              _buildDropdownField('Estado', estados, (value) {
+                setState(() {
+                  _estado = value;
+                });
+              }),
+              _buildSwitchField('Ativo', (value) {
+                setState(() {
+                  _isAtivo = value;
+                });
+              }),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Processar o cadastro
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Cadastro realizado com sucesso!'),
-                      ),
-                    );
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Cadastro realizado com sucesso!')));
                   }
                 },
                 child: Text('Salvar'),
@@ -83,11 +97,7 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
   }
 
   Widget _buildDropdownField(
-    String label,
-    List<String> options,
-    ValueChanged<String?> onChanged,
-    String? selectionField
-  ) {
+      String label, List<String> options, ValueChanged<String?> onChanged) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: DropdownButtonFormField<String>(
@@ -95,18 +105,33 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
           labelText: label,
           border: OutlineInputBorder(),
         ),
-        value: selectionField,
+        value: label == 'Cidade' ? _cidade : _estado,
         onChanged: onChanged,
-        items:
-            options.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(value: value, child: Text(value));
-            }).toList(),
+        items: options.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
         validator: (value) {
           if (value == null) {
             return '$label é obrigatório';
           }
           return null;
         },
+      ),
+    );
+  }
+
+  Widget _buildSwitchField(String label, ValueChanged<bool> onChanged) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: SwitchListTile(
+        title: Text(label),
+        value: _isAtivo ?? false,
+        onChanged: onChanged,
+        activeColor: Colors.green,
+        inactiveThumbColor: Colors.red,
       ),
     );
   }
