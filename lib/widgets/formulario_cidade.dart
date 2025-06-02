@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 
 class FormularioCidade extends StatefulWidget {
   @override
@@ -29,8 +30,8 @@ class _FormularioCidadeState extends State<FormularioCidade> {
           key: _formKey,
           child: ListView(
             children: [
-              _buildTextField(_nomeController, 'Nome'),
-              _buildDropdownField('Estado', estados, (value) {
+              buildTextField(_nomeController, 'Nome'),
+              buildDropdownField('Estado', estados, (value) {
                 setState(() {
                   _estado = value;
                 });
@@ -48,54 +49,6 @@ class _FormularioCidadeState extends State<FormularioCidade> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(TextEditingController controller, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return '$label é obrigatório';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildDropdownField(
-    String label,
-    List<String> options,
-    ValueChanged<String?> onChanged,
-    String? selectionField
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        value: selectionField,
-        onChanged: onChanged,
-        items:
-            options.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(value: value, child: Text(value));
-            }).toList(),
-        validator: (value) {
-          if (value == null) {
-            return '$label é obrigatório';
-          }
-          return null;
-        },
       ),
     );
   }

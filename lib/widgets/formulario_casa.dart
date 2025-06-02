@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 
 class FormularioCasa extends StatefulWidget {
   @override
@@ -7,16 +8,6 @@ class FormularioCasa extends StatefulWidget {
 
 class _FormularioCasaState extends State<FormularioCasa> {
   final _formKey = GlobalKey<FormState>();
-
-  /*
-  Cidade
-  Bairro
-  Logradouro
-  Número
-  Tipo
-  Área
-  Preço
-  */
 
   // Controllers para os campos de texto
   final TextEditingController _bairroController = TextEditingController();
@@ -46,17 +37,17 @@ class _FormularioCasaState extends State<FormularioCasa> {
           key: _formKey,
           child: ListView(
             children: [
-              _buildDropdownField('Cidade', cidades, (value) {
+              buildDropdownField('Cidade', cidades, (value) {
                 setState(() {
                   _cidade = value;
                 });
               }, _cidade),
-              _buildTextField(_bairroController, 'Bairro'),
-              _buildTextField(_logradouroController, 'Logradouro'),
-              _buildTextField(_numeroController, 'Nº'),
-              _buildTextField(_tipoController, 'Tipo'),
-              _buildTextField(_areaController, 'Área'),
-              _buildTextField(_precoController, 'Preço'),
+              buildTextField(_bairroController, 'Bairro'),
+              buildTextField(_logradouroController, 'Logradouro'),
+              buildTextField(_numeroController, 'Nº'),
+              buildTextField(_tipoController, 'Tipo'),
+              buildTextField(_areaController, 'Área'),
+              buildTextField(_precoController, 'Preço'),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -73,54 +64,6 @@ class _FormularioCasaState extends State<FormularioCasa> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(TextEditingController controller, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return '$label é obrigatório';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildDropdownField(
-    String label,
-    List<String> options,
-    ValueChanged<String?> onChanged,
-    String? selectionField,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        value: selectionField,
-        onChanged: onChanged,
-        items:
-            options.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(value: value, child: Text(value));
-            }).toList(),
-        validator: (value) {
-          if (value == null) {
-            return '$label é obrigatório';
-          }
-          return null;
-        },
       ),
     );
   }

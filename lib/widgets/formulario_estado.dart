@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 
 class FormularioEstado extends StatefulWidget {
   @override
@@ -22,8 +23,8 @@ class _FormularioEstadoState extends State<FormularioEstado> {
           key: _formKey,
           child: ListView(
             children: [
-              _buildTextField(_nomeController, 'Nome'),
-              _buildTextField(_siglaController, 'Sigla'),
+              buildTextField(_nomeController, 'Nome'),
+              buildTextField(_siglaController, 'Sigla'),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -40,25 +41,6 @@ class _FormularioEstadoState extends State<FormularioEstado> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(TextEditingController controller, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return '$label é obrigatório';
-          }
-          return null;
-        },
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 
 class FormularioPessoa extends StatefulWidget {
   @override
@@ -34,11 +35,11 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
           key: _formKey,
           child: ListView(
             children: [
-              _buildTextField(_nomeController, 'Nome'),
-              _buildTextField(_sobrenomeController, 'Sobrenome'),
-              _buildTextField(_telefoneController, 'Telefone'),
-              _buildTextField(_emailController, 'E-mail'),
-              _buildDropdownField('Cidade', cidades, (value) {
+              buildTextField(_nomeController, 'Nome'),
+              buildTextField(_sobrenomeController, 'Sobrenome'),
+              buildTextField(_telefoneController, 'Telefone'),
+              buildTextField(_emailController, 'E-mail'),
+              buildDropdownField('Cidade', cidades, (value) {
                 setState(() {
                   _cidade = value;
                 });
@@ -59,54 +60,6 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(TextEditingController controller, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return '$label é obrigatório';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildDropdownField(
-    String label,
-    List<String> options,
-    ValueChanged<String?> onChanged,
-    String? selectionField
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-        value: selectionField,
-        onChanged: onChanged,
-        items:
-            options.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(value: value, child: Text(value));
-            }).toList(),
-        validator: (value) {
-          if (value == null) {
-            return '$label é obrigatório';
-          }
-          return null;
-        },
       ),
     );
   }
