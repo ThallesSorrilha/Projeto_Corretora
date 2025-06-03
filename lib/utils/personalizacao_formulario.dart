@@ -6,6 +6,7 @@ final telefoneMask = MaskTextInputFormatter(mask: '(##) #####-####');
 final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
 
 final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+
 String? verifyEmail(String? value) {
   if (value == null || value.isEmpty) {
     return 'E-mail é obrigatório';
