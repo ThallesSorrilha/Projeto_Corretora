@@ -14,12 +14,12 @@ class _FormularioCasaState extends State<FormularioCasa> {
   final TextEditingController _bairroController = TextEditingController();
   final TextEditingController _logradouroController = TextEditingController();
   final TextEditingController _numeroController = TextEditingController();
-  final TextEditingController _tipoController = TextEditingController();
   final TextEditingController _areaController = TextEditingController();
   final TextEditingController _precoController = TextEditingController();
 
   // Campos de seleção
   String? _cidade;
+  String? _tipo;
 
   // Dados pré-definidos para as opções
   final List<String> cidades = [
@@ -27,6 +27,8 @@ class _FormularioCasaState extends State<FormularioCasa> {
     'Rio de Janeiro',
     'Belo Horizonte',
   ];
+
+  final List<String> tipos = ['Casa', 'Apartamento'];
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,11 @@ class _FormularioCasaState extends State<FormularioCasa> {
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
-              buildTextField(_tipoController, 'Tipo'),
+              buildDropdownField('Tipo', tipos, (value) {
+                setState(() {
+                  _tipo = value;
+                });
+              }, _tipo),
               buildTextField(
                 _areaController,
                 'Área',
