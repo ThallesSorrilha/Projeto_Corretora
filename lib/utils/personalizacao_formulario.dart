@@ -5,12 +5,24 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 final telefoneMask = MaskTextInputFormatter(mask: '(##) #####-####');
 final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
 
+final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+String? verifyEmail(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'E-mail é obrigatório';
+  }
+  if (!emailRegex.hasMatch(value)) {
+    return 'E-mail inválido, deve algo como nome@email.com';
+  }
+  return null;
+}
+
 Widget buildTextField(
   TextEditingController controller,
   String label, {
   TextInputType keyboardType = TextInputType.text,
   List<TextInputFormatter>? inputFormatters,
   String? hintText,
+  FormFieldValidator<String>? validator,
 }) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -23,12 +35,14 @@ Widget buildTextField(
         hintText: hintText,
         border: OutlineInputBorder(),
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return '$label é obrigatório';
-        }
-        return null;
-      },
+      validator:
+          validator ??
+          (value) {
+            if (value == null || value.isEmpty) {
+              return '$label é obrigatório';
+            }
+            return null;
+          },
     ),
   );
 }

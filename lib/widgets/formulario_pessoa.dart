@@ -43,7 +43,11 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
                 keyboardType: TextInputType.number,
                 inputFormatters: [telefoneMask],
               ),
-              buildTextField(_emailController, 'E-mail'),
+              buildTextField(
+                _emailController,
+                'E-mail',
+                validator: verifyEmail,
+              ),
               buildDropdownField('Cidade', cidades, (value) {
                 setState(() {
                   _cidade = value;
