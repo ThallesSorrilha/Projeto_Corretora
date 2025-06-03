@@ -37,7 +37,12 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
             children: [
               buildTextField(_nomeController, 'Nome'),
               buildTextField(_sobrenomeController, 'Sobrenome'),
-              buildTextField(_telefoneController, 'Telefone'),
+              buildTextField(
+                _telefoneController,
+                'Telefone',
+                keyboardType: TextInputType.number,
+                inputFormatters: [telefoneMask],
+              ),
               buildTextField(_emailController, 'E-mail'),
               buildDropdownField('Cidade', cidades, (value) {
                 setState(() {

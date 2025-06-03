@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
+import 'package:flutter/services.dart';
 
 class FormularioCasa extends StatefulWidget {
   @override
@@ -44,10 +45,25 @@ class _FormularioCasaState extends State<FormularioCasa> {
               }, _cidade),
               buildTextField(_bairroController, 'Bairro'),
               buildTextField(_logradouroController, 'Logradouro'),
-              buildTextField(_numeroController, 'Nº'),
+              buildTextField(
+                _numeroController,
+                'Nº',
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              ),
               buildTextField(_tipoController, 'Tipo'),
-              buildTextField(_areaController, 'Área'),
-              buildTextField(_precoController, 'Preço'),
+              buildTextField(
+                _areaController,
+                'Área',
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              ),
+              buildTextField(
+                _precoController,
+                'Preço',
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

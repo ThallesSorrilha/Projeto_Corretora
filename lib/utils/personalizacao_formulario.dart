@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-Widget buildTextField(TextEditingController controller, String label) {
+final telefoneMask = MaskTextInputFormatter(mask: '(##) #####-####');
+final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
+
+Widget buildTextField(
+  TextEditingController controller,
+  String label, {
+  TextInputType keyboardType = TextInputType.text,
+  List<TextInputFormatter>? inputFormatters,
+  String? hintText,
+}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         labelText: label,
+        hintText: hintText,
         border: OutlineInputBorder(),
       ),
       validator: (value) {
@@ -48,7 +62,11 @@ Widget buildDropdownField(
   );
 }
 
-Widget buildSwitchField(String label, bool value, ValueChanged<bool> onChanged) {
+Widget buildSwitchField(
+  String label,
+  bool value,
+  ValueChanged<bool> onChanged,
+) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: SwitchListTile(
