@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_corretora/widgets/formulario_cidade.dart';
-import 'package:projeto_corretora/widgets/formulario_estado.dart';
+import 'package:projeto_corretora/telas/formulario_cidade.dart';
+import 'package:projeto_corretora/telas/formulario_estado.dart';
 import '../configuracao/rotas.dart';
-import '../widgets/menu.dart';
-import 'package:projeto_corretora/widgets/formulario_pessoa.dart';
-import 'package:projeto_corretora/widgets/formulario_casa.dart';
+import '../telas/menu.dart';
+import 'package:projeto_corretora/telas/formulario_pessoa.dart';
+import 'package:projeto_corretora/telas/formulario_casa.dart';
 
 class Aplicativo extends StatelessWidget {
   const Aplicativo({key}) : super(key: key);

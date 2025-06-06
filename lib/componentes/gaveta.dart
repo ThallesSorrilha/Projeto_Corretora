@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../configuracao/rotas.dart';
+import '../configuracao/rotas.dart';
 
 class WidgetGaveta extends StatelessWidget {
   const WidgetGaveta({key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_corretora/widgets/componentes/gaveta.dart';
+import 'package:projeto_corretora/componentes/gaveta.dart';
 
 class WidgetMenu extends StatelessWidget {
   const WidgetMenu({super.key});
