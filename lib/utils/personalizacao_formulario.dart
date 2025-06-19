@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-final telefoneMask = MaskTextInputFormatter(mask: '(##) #####-####');
-final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
+class MaskUtils {
+  static final telefoneMask = MaskTextInputFormatter(mask: '(##) #####-####');
+  static final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
+}
 
-final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+enum FieldValidatorType { required, email }
 
-enum FieldValidatorType { required }
-
-String? applyFieldValidators(
+String? _applyFieldValidators(
   List<FieldValidatorType>? validators,
   String? value,
   String label,
@@ -20,17 +20,23 @@ String? applyFieldValidators(
       return '$label é obrigatório';
     }
   }
+  if (validators.contains(FieldValidatorType.email)) {
+    if (_verifyEmail(value) == false) {
+      return 'E-mail inválido, deve algo como nome@email.com';
+    }
+  }
   return null;
 }
 
-String? verifyEmail(String? value) {
+final _emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+bool? _verifyEmail(String? value) {
   if (value == null || value.isEmpty) {
     return null;
   }
-  if (!emailRegex.hasMatch(value)) {
-    return 'E-mail inválido, deve algo como nome@email.com';
+  if (_emailRegex.hasMatch(value)) {
+    return true;
   }
-  return null;
+  return false;
 }
 
 Widget buildTextField(
@@ -55,7 +61,7 @@ Widget buildTextField(
       ),
       validator:
           validator ??
-          (value) => applyFieldValidators(validators, value, label),
+          (value) => _applyFieldValidators(validators, value, label),
     ),
   );
 }
@@ -83,7 +89,7 @@ Widget buildDropdownField(
           }).toList(),
       validator:
           validator ??
-          (value) => applyFieldValidators(validators, value, label),
+          (value) => _applyFieldValidators(validators, value, label),
     ),
   );
 }

@@ -49,13 +49,13 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
                 _telefoneController,
                 'Telefone',
                 keyboardType: TextInputType.number,
-                inputFormatters: [telefoneMask],
+                inputFormatters: [MaskUtils.telefoneMask],
                 validators: [FieldValidatorType.required],
               ),
               buildTextField(
                 _emailController,
                 'E-mail',
-                validator: verifyEmail,
+                validators: [FieldValidatorType.email],
               ),
               buildDropdownField(
                 'Cidade',
