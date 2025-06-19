@@ -16,6 +16,7 @@ class _FormularioCasaState extends State<FormularioCasa> {
   final TextEditingController _numeroController = TextEditingController();
   final TextEditingController _areaController = TextEditingController();
   final TextEditingController _precoController = TextEditingController();
+  final TextEditingController _descricaoController = TextEditingController();
 
   // Campos de seleção
   String? _cidade;
@@ -40,36 +41,60 @@ class _FormularioCasaState extends State<FormularioCasa> {
           key: _formKey,
           child: ListView(
             children: [
-              buildDropdownField('Cidade', cidades, (value) {
-                setState(() {
-                  _cidade = value;
-                });
-              }, _cidade),
-              buildTextField(_bairroController, 'Bairro'),
-              buildTextField(_logradouroController, 'Logradouro'),
+              buildDropdownField(
+                'Cidade',
+                cidades,
+                (value) {
+                  setState(() {
+                    _cidade = value;
+                  });
+                },
+                _cidade,
+                validators: [FieldValidatorType.required],
+              ),
+              buildTextField(
+                _bairroController,
+                'Bairro',
+                validators: [FieldValidatorType.required],
+              ),
+              buildTextField(
+                _logradouroController,
+                'Logradouro',
+                validators: [FieldValidatorType.required],
+              ),
               buildTextField(
                 _numeroController,
                 'Nº',
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validators: [FieldValidatorType.required],
               ),
-              buildDropdownField('Tipo', tipos, (value) {
-                setState(() {
-                  _tipo = value;
-                });
-              }, _tipo),
+              buildDropdownField(
+                'Tipo',
+                tipos,
+                (value) {
+                  setState(() {
+                    _tipo = value;
+                  });
+                },
+                _tipo,
+                validators: [FieldValidatorType.required],
+              ),
               buildTextField(
                 _areaController,
                 'Área',
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validators: [FieldValidatorType.required],
               ),
               buildTextField(
                 _precoController,
                 'Preço',
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validators: [FieldValidatorType.required],
               ),
+              buildTextField(_descricaoController, 'Descrição'),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

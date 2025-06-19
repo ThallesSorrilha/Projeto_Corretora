@@ -35,24 +35,39 @@ class _FormularioPessoaState extends State<FormularioPessoa> {
           key: _formKey,
           child: ListView(
             children: [
-              buildTextField(_nomeController, 'Nome'),
-              buildTextField(_sobrenomeController, 'Sobrenome'),
+              buildTextField(
+                _nomeController,
+                'Nome',
+                validators: [FieldValidatorType.required],
+              ),
+              buildTextField(
+                _sobrenomeController,
+                'Sobrenome',
+                validators: [FieldValidatorType.required],
+              ),
               buildTextField(
                 _telefoneController,
                 'Telefone',
                 keyboardType: TextInputType.number,
                 inputFormatters: [telefoneMask],
+                validators: [FieldValidatorType.required],
               ),
               buildTextField(
                 _emailController,
                 'E-mail',
                 validator: verifyEmail,
               ),
-              buildDropdownField('Cidade', cidades, (value) {
-                setState(() {
-                  _cidade = value;
-                });
-              }, _cidade),
+              buildDropdownField(
+                'Cidade',
+                cidades,
+                (value) {
+                  setState(() {
+                    _cidade = value;
+                  });
+                },
+                _cidade,
+                validators: [FieldValidatorType.required],
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

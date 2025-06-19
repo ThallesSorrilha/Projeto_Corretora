@@ -7,9 +7,25 @@ final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
 
 final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
 
+enum FieldValidatorType { required }
+
+String? applyFieldValidators(
+  List<FieldValidatorType>? validators,
+  String? value,
+  String label,
+) {
+  if (validators == null) return null;
+  if (validators.contains(FieldValidatorType.required)) {
+    if (value == null || value.isEmpty) {
+      return '$label é obrigatório';
+    }
+  }
+  return null;
+}
+
 String? verifyEmail(String? value) {
   if (value == null || value.isEmpty) {
-    return 'E-mail é obrigatório';
+    return null;
   }
   if (!emailRegex.hasMatch(value)) {
     return 'E-mail inválido, deve algo como nome@email.com';
@@ -24,6 +40,7 @@ Widget buildTextField(
   List<TextInputFormatter>? inputFormatters,
   String? hintText,
   FormFieldValidator<String>? validator,
+  List<FieldValidatorType>? validators,
 }) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -38,12 +55,7 @@ Widget buildTextField(
       ),
       validator:
           validator ??
-          (value) {
-            if (value == null || value.isEmpty) {
-              return '$label é obrigatório';
-            }
-            return null;
-          },
+          (value) => applyFieldValidators(validators, value, label),
     ),
   );
 }
@@ -52,8 +64,10 @@ Widget buildDropdownField(
   String label,
   List<String> options,
   ValueChanged<String?> onChanged,
-  String? selectionField,
-) {
+  String? selectionField, {
+  FormFieldValidator<String>? validator,
+  List<FieldValidatorType>? validators,
+}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: DropdownButtonFormField<String>(
@@ -67,12 +81,9 @@ Widget buildDropdownField(
           options.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(value: value, child: Text(value));
           }).toList(),
-      validator: (value) {
-        if (value == null) {
-          return '$label é obrigatório';
-        }
-        return null;
-      },
+      validator:
+          validator ??
+          (value) => applyFieldValidators(validators, value, label),
     ),
   );
 }

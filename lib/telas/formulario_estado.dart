@@ -23,8 +23,8 @@ class _FormularioEstadoState extends State<FormularioEstado> {
           key: _formKey,
           child: ListView(
             children: [
-              buildTextField(_nomeController, 'Nome'),
-              buildTextField(_siglaController, 'Sigla'),
+              buildTextField(_nomeController, 'Nome', validators: [FieldValidatorType.required],),
+              buildTextField(_siglaController, 'Sigla', validators: [FieldValidatorType.required],),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

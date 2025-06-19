@@ -30,12 +30,12 @@ class _FormularioCidadeState extends State<FormularioCidade> {
           key: _formKey,
           child: ListView(
             children: [
-              buildTextField(_nomeController, 'Nome'),
+              buildTextField(_nomeController, 'Nome', validators: [FieldValidatorType.required],),
               buildDropdownField('Estado', estados, (value) {
                 setState(() {
                   _estado = value;
                 });
-              }, _estado),
+              }, _estado, validators: [FieldValidatorType.required],),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
