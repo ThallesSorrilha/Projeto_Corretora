@@ -9,34 +9,35 @@ class MaskUtils {
 
 enum FieldValidatorType { required, email }
 
+typedef FieldValidatorFunction = String? Function(String? value, String label);
+final Map<FieldValidatorType, FieldValidatorFunction> fieldValidators = {
+  FieldValidatorType.required: (value, label) {
+    if (value == null || value.isEmpty) {
+      return '$label é obrigatório';
+    }
+    return null;
+  },
+  FieldValidatorType.email: (value, label) {
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (value == null || value.isEmpty) return null;
+    if (!emailRegex.hasMatch(value)) {
+      return 'E-mail inválido, deve ser algo como nome@email.com';
+    }
+    return null;
+  },
+};
+
 String? _applyFieldValidators(
   List<FieldValidatorType>? validators,
   String? value,
   String label,
 ) {
   if (validators == null) return null;
-  if (validators.contains(FieldValidatorType.required)) {
-    if (value == null || value.isEmpty) {
-      return '$label é obrigatório';
-    }
-  }
-  if (validators.contains(FieldValidatorType.email)) {
-    if (_verifyEmail(value) == false) {
-      return 'E-mail inválido, deve algo como nome@email.com';
-    }
+  for (var validatorType in validators) {
+    final result = fieldValidators[validatorType]?.call(value, label);
+    if (result != null) return result;
   }
   return null;
-}
-
-final _emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-bool? _verifyEmail(String? value) {
-  if (value == null || value.isEmpty) {
-    return null;
-  }
-  if (_emailRegex.hasMatch(value)) {
-    return true;
-  }
-  return false;
 }
 
 Widget buildTextField(
