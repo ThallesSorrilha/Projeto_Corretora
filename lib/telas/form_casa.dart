@@ -3,8 +3,10 @@ import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 import 'package:flutter/services.dart';
 
 class FormCasa extends StatefulWidget {
+  const FormCasa({super.key});
+
   @override
-  _FormCasaState createState() => _FormCasaState();
+  State<FormCasa> createState() => _FormCasaState();
 }
 
 class _FormCasaState extends State<FormCasa> {

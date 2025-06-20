@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 
 class FormEstado extends StatefulWidget {
+  const FormEstado({super.key});
+
   @override
-  _FormEstadoState createState() => _FormEstadoState();
+  State<FormEstado> createState() => _FormEstadoState();
 }
 
 class _FormEstadoState extends State<FormEstado> {

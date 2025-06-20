@@ -19,13 +19,13 @@ class Aplicativo extends StatelessWidget {
       routes: {
         Rotas.home: (context) => const WidgetMenu(),
         Rotas.login: (context) => const WidgetMenu(),
-        Rotas.cadastrarUsuario: (context) => FormPessoa(),
+        Rotas.cadastrarUsuario: (context) => const FormPessoa(),
         Rotas.usuario: (context) => const WidgetMenu(),
         Rotas.logout: (context) => const WidgetMenu(),
         Rotas.buscarCasa: (context) => const WidgetMenu(),
-        Rotas.cadastrarCasa: (context) => FormCasa(),
-        Rotas.cadastrarEstado: (context) => FormEstado(),
-        Rotas.cadastrarCidade: (context) => FormCidade(),
+        Rotas.cadastrarCasa: (context) => const FormCasa(),
+        Rotas.cadastrarEstado: (context) => const FormEstado(),
+        Rotas.cadastrarCidade: (context) => const FormCidade(),
       },
     );
   }
