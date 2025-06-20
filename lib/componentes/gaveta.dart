@@ -32,27 +32,27 @@ class WidgetGaveta extends StatelessWidget {
           criarMenu(
             icone: Icons.search,
             rotulo: 'Buscar Casa',
-            rota: Rotas.casaBuscar,
+            rota: Rotas.buscarCasa,
           ),
           criarMenu(
             icone: Icons.home_work,
             rotulo: 'Cadastrar Casa',
-            rota: Rotas.casaCadastrar,
+            rota: Rotas.cadastrarCasa,
           ),
           criarMenu(
             icone: Icons.add_reaction,
             rotulo: 'Cadastrar Usuário',
-            rota: Rotas.usuarioCadastro,
+            rota: Rotas.cadastrarUsuario,
           ),
           criarMenu(
             icone: Icons.map,
             rotulo: 'Cadastrar Estado',
-            rota: Rotas.estadoCadastrar,
+            rota: Rotas.cadastrarEstado,
           ),
           criarMenu(
             icone: Icons.location_city,
             rotulo: 'Cadastrar Cidade',
-            rota: Rotas.cidadeCadastrar,
+            rota: Rotas.cadastrarCidade,
           ),
           criarMenu(
             icone: Icons.account_circle,

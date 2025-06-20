@@ -1,11 +1,11 @@
 class Rotas {
   static const home = '/';
+  static const cadastrarUsuario = '/cadastar-usuario';
   static const login = '/login';
-  static const usuarioCadastro = '/cadastar-usuario';
   static const usuario = '/usuario';
   static const logout = '/logout';
-  static const casaBuscar = '/buscar-casa';
-  static const casaCadastrar = '/cadastrar-casa';
-  static const estadoCadastrar = '/cadastrar-estado';
-  static const cidadeCadastrar = '/cadastrar-cidade';
+  static const buscarCasa = '/buscar-casa';
+  static const cadastrarCasa = '/cadastrar-casa';
+  static const cadastrarEstado = '/cadastrar-estado';
+  static const cadastrarCidade = '/cadastrar-cidade';
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_corretora/telas/formulario_cidade.dart';
-import 'package:projeto_corretora/telas/formulario_estado.dart';
+import 'package:projeto_corretora/telas/form_cidade.dart';
+import 'package:projeto_corretora/telas/form_estado.dart';
 import 'configuracao/rotas.dart';
 import 'telas/menu.dart';
-import 'package:projeto_corretora/telas/formulario_pessoa.dart';
-import 'package:projeto_corretora/telas/formulario_casa.dart';
+import 'package:projeto_corretora/telas/form_pessoa.dart';
+import 'package:projeto_corretora/telas/form_casa.dart';
 
 class Aplicativo extends StatelessWidget {
   const Aplicativo({key}) : super(key: key);
@@ -19,13 +19,13 @@ class Aplicativo extends StatelessWidget {
       routes: {
         Rotas.home: (context) => const WidgetMenu(),
         Rotas.login: (context) => const WidgetMenu(),
-        Rotas.usuarioCadastro: (context) => FormularioPessoa(),
+        Rotas.cadastrarUsuario: (context) => FormPessoa(),
         Rotas.usuario: (context) => const WidgetMenu(),
         Rotas.logout: (context) => const WidgetMenu(),
-        Rotas.casaBuscar: (context) => const WidgetMenu(),
-        Rotas.casaCadastrar: (context) => FormularioCasa(),
-        Rotas.estadoCadastrar: (context) => FormularioEstado(),
-        Rotas.cidadeCadastrar: (context) => FormularioCidade(),
+        Rotas.buscarCasa: (context) => const WidgetMenu(),
+        Rotas.cadastrarCasa: (context) => FormCasa(),
+        Rotas.cadastrarEstado: (context) => FormEstado(),
+        Rotas.cadastrarCidade: (context) => FormCidade(),
       },
     );
   }

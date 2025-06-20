@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 
-class FormularioEstado extends StatefulWidget {
+class FormEstado extends StatefulWidget {
   @override
-  _FormularioEstadoState createState() => _FormularioEstadoState();
+  _FormEstadoState createState() => _FormEstadoState();
 }
 
-class _FormularioEstadoState extends State<FormularioEstado> {
+class _FormEstadoState extends State<FormEstado> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers para os campos de texto
