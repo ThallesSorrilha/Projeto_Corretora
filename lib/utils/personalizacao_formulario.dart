@@ -33,7 +33,7 @@ String? _applyFieldValidators(
   String label,
 ) {
   if (validators == null) return null;
-  for (var validatorType in validators) {
+  for (FieldValidatorType validatorType in validators) {
     final result = fieldValidators[validatorType]?.call(value, label);
     if (result != null) return result;
   }
