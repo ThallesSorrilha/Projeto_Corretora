@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 import 'package:flutter/services.dart';
 
@@ -24,6 +25,43 @@ class _FormCasaState extends State<FormCasa> {
   String? _cidade;
   String? _tipo;
 
+  @override
+  void dispose() {
+    _bairroController.dispose();
+    _logradouroController.dispose();
+    _numeroController.dispose();
+    _areaController.dispose();
+    _precoController.dispose();
+    _descricaoController.dispose();
+    super.dispose();
+  }
+
+  void _salvar() {
+    if (_formKey.currentState?.validate() ?? false) {
+      // Formulário válido, pode prosseguir com cadastro ou salvar os dados
+      final casaData = {
+        'cidade': _cidade,
+        'bairro': _bairroController.text.trim(),
+        'logradouro': _logradouroController.text.trim(),
+        'numero': _numeroController.text.trim(),
+        'tipo': _tipo,
+        'area': _areaController.text.trim(),
+        'preco': _precoController.text.trim(),
+        'descricao': _descricaoController.text.trim(),
+      };
+
+      //...
+      print('Aluno salvo: $casaData');
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Aluno salvo com sucesso!')));
+
+      // Opcional: limpar o formulário ou voltar
+      // Navigator.of(context).pop();
+    }
+  }
+
   // Dados pré-definidos para as opções
   final List<String> cidades = [
     'São Paulo',
@@ -36,7 +74,7 @@ class _FormCasaState extends State<FormCasa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastro de Casa')),
+      appBar: AppBarSalvar(titulo: "Cadastrar Casa", aoSalvar: _salvar),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
