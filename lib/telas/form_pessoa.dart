@@ -1,5 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
+import 'package:projeto_corretora/componentes/campo_opcoes.dart';
+import 'package:projeto_corretora/dto/dto.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
+import 'package:projeto_corretora/componentes/campo_busca_opcoes.dart';
+
+class Cidade extends DTO {
+  Cidade({required super.id, required super.nome});
+}
+
+class Usuario extends DTO {
+  Usuario({required super.id, required super.nome});
+}
+
+List<Cidade> selectCidades = [
+  Cidade(id: 1, nome: 'Navegantes'),
+  Cidade(id: 2, nome: 'Florianópolis'),
+  Cidade(id: 3, nome: 'Curitiba'),
+  Cidade(id: 4, nome: 'Maringá'),
+  Cidade(id: 5, nome: 'Ouro Preto'),
+  Cidade(id: 6, nome: 'Belo Horizonte'),
+];
+
+List<Usuario> selectUsuarios = [
+  Usuario(id: 1, nome: 'Cleiton'),
+  Usuario(id: 2, nome: 'Jorge'),
+  Usuario(id: 3, nome: 'Betinho'),
+  Usuario(id: 4, nome: 'Cleonice'),
+  Usuario(id: 5, nome: 'Florentina'),
+  Usuario(id: 6, nome: 'Zazá'),
+];
 
 class FormPessoa extends StatefulWidget {
   const FormPessoa({super.key});
@@ -17,20 +47,50 @@ class _FormPessoaState extends State<FormPessoa> {
   final TextEditingController _telefoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  // Campos de seleção
-  String? _cidade;
+  final List<Cidade> _cidadeOpcoes = selectCidades;
+  final List<Usuario> _usuariosOpcoes = selectUsuarios;
 
-  // Dados pré-definidos para as opções
-  final List<String> cidades = [
-    'São Paulo',
-    'Rio de Janeiro',
-    'Belo Horizonte',
-  ];
+  // Campos de seleção
+  Cidade? _cidadeSelecionada;
+  Usuario? _usuariosSelecionados;
+
+  void dispose() {
+    _nomeController.dispose();
+    _sobrenomeController.dispose();
+    _telefoneController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  void _salvar() {
+    final formValido = _formKey.currentState?.validate() ?? false;
+    if (formValido) {
+      // Formulário válido, pode prosseguir com cadastro ou salvar os dados
+      final usuarioData = {
+        'nome': _nomeController.text.trim(),
+        'sobrenome': _sobrenomeController.text.trim(),
+        'telefone': _telefoneController.text.trim(),
+        'email': _emailController.text.trim(),
+        'cidade': _cidadeSelecionada,
+        'usuarios': _usuariosSelecionados,
+      };
+
+      //...
+      print('Aluno salvo: $usuarioData');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Usuário salvo com sucesso!')),
+      );
+
+      // Opcional: limpar o formulário ou voltar
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastro de Usuário')),
+      appBar: AppBarSalvar(titulo: "Cadastrar de Usuário", aoSalvar: _salvar),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -59,30 +119,29 @@ class _FormPessoaState extends State<FormPessoa> {
                 'E-mail',
                 validators: [FieldValidatorType.email],
               ),
-              buildDropdownField(
-                'Cidade',
-                cidades,
-                (value) {
+              CampoOpcoes<Cidade>(
+                opcoes: _cidadeOpcoes,
+                valorSelecionado: _cidadeSelecionada,
+                rotulo: 'Cidade',
+                eObrigatorio: true,
+                textoPadrao: 'Selecione uma cidade',
+                onChanged: (cidade) {
                   setState(() {
-                    _cidade = value;
+                    _cidadeSelecionada = cidade;
                   });
                 },
-                _cidade,
-                validators: [FieldValidatorType.required],
               ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Processar o cadastro
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Cadastro realizado com sucesso!'),
-                      ),
-                    );
-                  }
+              CampoBuscaOpcoes<Usuario>(
+                opcoes: _usuariosOpcoes,
+                valorSelecionado: _usuariosSelecionados,
+                rotulo: 'Usuario',
+                onChanged: (usuario) {
+                  setState(() {
+                    _usuariosSelecionados = usuario;
+                  });
                 },
-                child: Text('Salvar'),
               ),
+              ElevatedButton(onPressed: _salvar, child: Text('Salvar')),
             ],
           ),
         ),

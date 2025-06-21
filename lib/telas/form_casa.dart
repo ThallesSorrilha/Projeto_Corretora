@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
+import 'package:projeto_corretora/componentes/campo_opcoes.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 import 'package:flutter/services.dart';
+import 'package:projeto_corretora/dto/dto.dart';
+
+class Cidade extends DTO {
+  Cidade({required super.id, required super.nome});
+}
+
+List<Cidade> selectCidades = [
+  Cidade(id: 1, nome: 'Navegantes'),
+  Cidade(id: 2, nome: 'Florianópolis'),
+  Cidade(id: 3, nome: 'Curitiba'),
+  Cidade(id: 4, nome: 'Maringá'),
+  Cidade(id: 5, nome: 'Ouro Preto'),
+  Cidade(id: 6, nome: 'Belo Horizonte'),
+];
 
 class FormCasa extends StatefulWidget {
   const FormCasa({super.key});
@@ -20,9 +35,9 @@ class _FormCasaState extends State<FormCasa> {
   final TextEditingController _areaController = TextEditingController();
   final TextEditingController _precoController = TextEditingController();
   final TextEditingController _descricaoController = TextEditingController();
+  final List<Cidade> _cidadeOpcoes = selectCidades;
 
-  // Campos de seleção
-  String? _cidade;
+  Cidade? _cidadeSelecionada;
   String? _tipo;
 
   @override
@@ -37,10 +52,11 @@ class _FormCasaState extends State<FormCasa> {
   }
 
   void _salvar() {
-    if (_formKey.currentState?.validate() ?? false) {
+    final formValido = _formKey.currentState?.validate() ?? false;
+    if (formValido) {
       // Formulário válido, pode prosseguir com cadastro ou salvar os dados
       final casaData = {
-        'cidade': _cidade,
+        'cidade': _cidadeSelecionada,
         'bairro': _bairroController.text.trim(),
         'logradouro': _logradouroController.text.trim(),
         'numero': _numeroController.text.trim(),
@@ -55,19 +71,12 @@ class _FormCasaState extends State<FormCasa> {
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Aluno salvo com sucesso!')));
+      ).showSnackBar(const SnackBar(content: Text('Casa salva com sucesso!')));
 
       // Opcional: limpar o formulário ou voltar
-      // Navigator.of(context).pop();
+      Navigator.of(context).pop();
     }
   }
-
-  // Dados pré-definidos para as opções
-  final List<String> cidades = [
-    'São Paulo',
-    'Rio de Janeiro',
-    'Belo Horizonte',
-  ];
 
   final List<String> tipos = ['Casa', 'Apartamento'];
 
@@ -81,16 +90,16 @@ class _FormCasaState extends State<FormCasa> {
           key: _formKey,
           child: ListView(
             children: [
-              buildDropdownField(
-                'Cidade',
-                cidades,
-                (value) {
+              CampoOpcoes<Cidade>(
+                opcoes: _cidadeOpcoes,
+                valorSelecionado: _cidadeSelecionada,
+                rotulo: 'Cidade',
+                textoPadrao: 'Selecione uma cidade',
+                onChanged: (cidade) {
                   setState(() {
-                    _cidade = value;
+                    _cidadeSelecionada = cidade;
                   });
                 },
-                _cidade,
-                validators: [FieldValidatorType.required],
               ),
               buildTextField(
                 _bairroController,
@@ -135,19 +144,7 @@ class _FormCasaState extends State<FormCasa> {
                 validators: [FieldValidatorType.required],
               ),
               buildTextField(_descricaoController, 'Descrição'),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Processar o cadastro
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Cadastro realizado com sucesso!'),
-                      ),
-                    );
-                  }
-                },
-                child: Text('Salvar'),
-              ),
+              ElevatedButton(onPressed: _salvar, child: Text('Salvar')),
             ],
           ),
         ),

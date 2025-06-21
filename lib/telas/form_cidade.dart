@@ -1,5 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/componentes/campo_opcoes.dart';
+import 'package:projeto_corretora/dto/dto.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
+import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
+
+class Estado extends DTO {
+  Estado({required super.id, required super.nome});
+}
+
+List<Estado> selectEstados = [
+  Estado(id: 1, nome: 'Santa Catarina'),
+  Estado(id: 2, nome: 'Paraná'),
+  Estado(id: 3, nome: 'Minas Gerais'),
+];
 
 class FormCidade extends StatefulWidget {
   const FormCidade({super.key});
@@ -11,43 +24,66 @@ class FormCidade extends StatefulWidget {
 class _FormCidadeState extends State<FormCidade> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers para os campos de texto
   final TextEditingController _nomeController = TextEditingController();
+  final List<Estado> _estadoOpcoes = selectEstados;
 
-  // Campos de seleção
-  String? _estado;
+  Estado? _estadoSelecionado;
 
-  // Dados pré-definidos para as opções
-  final List<String> estados = ['SP', 'RJ', 'MG'];
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    super.dispose();
+  }
+
+  void _salvar() {
+    final formValido = _formKey.currentState?.validate() ?? false;
+    if (formValido) {
+      // Formulário válido, pode prosseguir com cadastro ou salvar os dados
+      final cidadeData = {
+        'nome': _nomeController.text.trim(),
+        'estado': _estadoSelecionado,
+      };
+
+      //...
+      print('Aluno salvo: $cidadeData');
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Aluno salvo com sucesso!')));
+
+      // Opcional: limpar o formulário ou voltar
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cadastro de Estado'),
-      ),
+      appBar: AppBarSalvar(titulo: "Cadastrar Estado", aoSalvar: _salvar),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              buildTextField(_nomeController, 'Nome', validators: [FieldValidatorType.required],),
-              buildDropdownField('Estado', estados, (value) {
-                setState(() {
-                  _estado = value;
-                });
-              }, _estado, validators: [FieldValidatorType.required],),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Processar o cadastro
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Cadastro realizado com sucesso!')));
-                  }
-                },
-                child: Text('Salvar'),
+              buildTextField(
+                _nomeController,
+                'Nome',
+                validators: [FieldValidatorType.required],
               ),
+              CampoOpcoes<Estado>(
+                opcoes: _estadoOpcoes,
+                valorSelecionado: _estadoSelecionado,
+                rotulo: 'Estado',
+                eObrigatorio: true,
+                textoPadrao: 'Selecione um Estado',
+                onChanged: (estado) {
+                  setState(() {
+                    _estadoSelecionado = estado;
+                  });
+                },
+              ),
+              ElevatedButton(onPressed: _salvar, child: Text('Salvar')),
             ],
           ),
         ),
