@@ -38,28 +38,26 @@ class _FormCidadeState extends State<FormCidade> {
   void _salvar() {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      // Formulário válido, pode prosseguir com cadastro ou salvar os dados
       final cidadeData = {
         'nome': _nomeController.text.trim(),
         'estado': _estadoSelecionado,
       };
 
       //...
-      print('Aluno salvo: $cidadeData');
+      print('Cidade salva: $cidadeData');
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Aluno salvo com sucesso!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cidade salva com sucesso!')),
+      );
 
-      // Opcional: limpar o formulário ou voltar
-      Navigator.of(context).pop();
+      //Navigator.of(context).pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarSalvar(titulo: "Cadastrar Estado", aoSalvar: _salvar),
+      appBar: AppBarSalvar(titulo: "Cadastrar Cidade", aoSalvar: _salvar),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

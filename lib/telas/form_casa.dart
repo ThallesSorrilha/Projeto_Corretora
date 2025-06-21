@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
+import 'package:projeto_corretora/componentes/busca_multipla.dart';
 import 'package:projeto_corretora/componentes/campo_opcoes.dart';
+import 'package:projeto_corretora/telas/form_pessoa.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 import 'package:flutter/services.dart';
 import 'package:projeto_corretora/dto/dto.dart';
@@ -28,17 +30,20 @@ class FormCasa extends StatefulWidget {
 class _FormCasaState extends State<FormCasa> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers para os campos de texto
   final TextEditingController _bairroController = TextEditingController();
   final TextEditingController _logradouroController = TextEditingController();
   final TextEditingController _numeroController = TextEditingController();
   final TextEditingController _areaController = TextEditingController();
   final TextEditingController _precoController = TextEditingController();
   final TextEditingController _descricaoController = TextEditingController();
+
   final List<Cidade> _cidadeOpcoes = selectCidades;
+  final List<Usuario> _usuariosOpcoes = selectUsuarios;
+  final List<String> tiposLista = ['Casa', 'Apartamento'];
 
   Cidade? _cidadeSelecionada;
-  String? _tipo;
+  String? _tipoSelecionado;
+  List<Usuario> _usuariosSelecionados = [];
 
   @override
   void dispose() {
@@ -54,31 +59,28 @@ class _FormCasaState extends State<FormCasa> {
   void _salvar() {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      // Formulário válido, pode prosseguir com cadastro ou salvar os dados
       final casaData = {
         'cidade': _cidadeSelecionada,
         'bairro': _bairroController.text.trim(),
         'logradouro': _logradouroController.text.trim(),
         'numero': _numeroController.text.trim(),
-        'tipo': _tipo,
+        'tipo': _tipoSelecionado,
         'area': _areaController.text.trim(),
         'preco': _precoController.text.trim(),
         'descricao': _descricaoController.text.trim(),
+        'usuarios': _usuariosSelecionados,
       };
 
       //...
-      print('Aluno salvo: $casaData');
+      print('Casa salva: $casaData');
 
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Casa salva com sucesso!')));
 
-      // Opcional: limpar o formulário ou voltar
-      Navigator.of(context).pop();
+      //Navigator.of(context).pop();
     }
   }
-
-  final List<String> tipos = ['Casa', 'Apartamento'];
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +96,7 @@ class _FormCasaState extends State<FormCasa> {
                 opcoes: _cidadeOpcoes,
                 valorSelecionado: _cidadeSelecionada,
                 rotulo: 'Cidade',
+                eObrigatorio: true,
                 textoPadrao: 'Selecione uma cidade',
                 onChanged: (cidade) {
                   setState(() {
@@ -120,13 +123,13 @@ class _FormCasaState extends State<FormCasa> {
               ),
               buildDropdownField(
                 'Tipo',
-                tipos,
+                tiposLista,
                 (value) {
                   setState(() {
-                    _tipo = value;
+                    _tipoSelecionado = value;
                   });
                 },
-                _tipo,
+                _tipoSelecionado,
                 validators: [FieldValidatorType.required],
               ),
               buildTextField(
@@ -144,6 +147,16 @@ class _FormCasaState extends State<FormCasa> {
                 validators: [FieldValidatorType.required],
               ),
               buildTextField(_descricaoController, 'Descrição'),
+              CampoBuscaMultipla<Usuario>(
+                opcoes: _usuariosOpcoes,
+                rotulo: 'Usuários',
+                textoPadrao: 'Selecione um ou mais usuários',
+                onChanged: (usuarios) {
+                  setState(() {
+                    _usuariosSelecionados = usuarios;
+                  });
+                },
+              ),
               ElevatedButton(onPressed: _salvar, child: Text('Salvar')),
             ],
           ),

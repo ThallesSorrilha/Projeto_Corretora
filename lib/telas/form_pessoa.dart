@@ -3,7 +3,6 @@ import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
 import 'package:projeto_corretora/componentes/campo_opcoes.dart';
 import 'package:projeto_corretora/dto/dto.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
-import 'package:projeto_corretora/componentes/campo_busca_opcoes.dart';
 
 class Cidade extends DTO {
   Cidade({required super.id, required super.nome});
@@ -41,19 +40,16 @@ class FormPessoa extends StatefulWidget {
 class _FormPessoaState extends State<FormPessoa> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers para os campos de texto
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _sobrenomeController = TextEditingController();
   final TextEditingController _telefoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
   final List<Cidade> _cidadeOpcoes = selectCidades;
-  final List<Usuario> _usuariosOpcoes = selectUsuarios;
 
-  // Campos de seleção
   Cidade? _cidadeSelecionada;
-  Usuario? _usuariosSelecionados;
 
+  @override
   void dispose() {
     _nomeController.dispose();
     _sobrenomeController.dispose();
@@ -65,25 +61,22 @@ class _FormPessoaState extends State<FormPessoa> {
   void _salvar() {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      // Formulário válido, pode prosseguir com cadastro ou salvar os dados
       final usuarioData = {
         'nome': _nomeController.text.trim(),
         'sobrenome': _sobrenomeController.text.trim(),
         'telefone': _telefoneController.text.trim(),
         'email': _emailController.text.trim(),
         'cidade': _cidadeSelecionada,
-        'usuarios': _usuariosSelecionados,
       };
 
       //...
-      print('Aluno salvo: $usuarioData');
+      print('Usuário salvo: $usuarioData');
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Usuário salvo com sucesso!')),
       );
 
-      // Opcional: limpar o formulário ou voltar
-      Navigator.of(context).pop();
+      //Navigator.of(context).pop();
     }
   }
 
@@ -128,16 +121,6 @@ class _FormPessoaState extends State<FormPessoa> {
                 onChanged: (cidade) {
                   setState(() {
                     _cidadeSelecionada = cidade;
-                  });
-                },
-              ),
-              CampoBuscaOpcoes<Usuario>(
-                opcoes: _usuariosOpcoes,
-                valorSelecionado: _usuariosSelecionados,
-                rotulo: 'Usuario',
-                onChanged: (usuario) {
-                  setState(() {
-                    _usuariosSelecionados = usuario;
                   });
                 },
               ),
