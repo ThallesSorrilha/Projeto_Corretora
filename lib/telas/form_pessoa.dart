@@ -3,7 +3,7 @@ import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
 import 'package:projeto_corretora/componentes/entrada_select.dart';
 import 'package:projeto_corretora/componentes/entrada_texto.dart';
 import 'package:projeto_corretora/dto/dto.dart';
-import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
+import 'package:projeto_corretora/utils/mascaras.dart';
 import 'package:projeto_corretora/utils/validacao.dart';
 
 class Cidade extends DTO {

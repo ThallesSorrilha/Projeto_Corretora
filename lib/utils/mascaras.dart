@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class MaskUtils {
@@ -15,7 +14,7 @@ class MaskUtils {
   static final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
 }
 
-Widget buildSwitchField(
+/*Widget buildSwitchField(
   String label,
   bool value,
   ValueChanged<bool> onChanged,
@@ -30,4 +29,4 @@ Widget buildSwitchField(
       inactiveThumbColor: Colors.red,
     ),
   );
-}
+}*/
