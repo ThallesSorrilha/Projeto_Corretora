@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/dto/dto.dart';
 
-class CampoOpcoes<T extends DTO> extends StatefulWidget {
+class EntradaSelect<T extends DTO> extends StatefulWidget {
   final List<T> opcoes;
   final T? valorSelecionado;
-  final bool eObrigatorio;
+  final FormFieldValidator<T>? validator;
   final String textoPadrao;
   final String rotulo;
   final void Function(T?)? onChanged;
 
-  const CampoOpcoes({
+  const EntradaSelect({
     Key? key,
     required this.opcoes,
     this.valorSelecionado,
-    this.eObrigatorio = true,
+    this.validator,
     this.textoPadrao = 'Escolha uma opção',
     required this.rotulo,
     this.onChanged,
   }) : super(key: key);
 
   @override
-  State<CampoOpcoes<T>> createState() => _CampoOpcoesState<T>();
+  State<EntradaSelect<T>> createState() => _EntradaSelectState<T>();
 }
 
-class _CampoOpcoesState<T extends DTO> extends State<CampoOpcoes<T>> {
+class _EntradaSelectState<T extends DTO> extends State<EntradaSelect<T>> {
   late List<T> _opcoesCampo;
   T? _valorSelecionado;
 
@@ -32,13 +32,6 @@ class _CampoOpcoesState<T extends DTO> extends State<CampoOpcoes<T>> {
     super.initState();
     _opcoesCampo = List.from(widget.opcoes);
     _valorSelecionado = widget.valorSelecionado;
-  }
-
-  String? _validar(T? valor) {
-    if (widget.eObrigatorio && valor == null) {
-      return 'Selecione uma opção';
-    }
-    return null;
   }
 
   @override
@@ -52,7 +45,7 @@ class _CampoOpcoesState<T extends DTO> extends State<CampoOpcoes<T>> {
         ),
         isExpanded: true,
         value: _valorSelecionado,
-        validator: (value) => _validar(value),
+        validator: widget.validator,
         onChanged: (T? novoValor) {
           setState(() {
             _valorSelecionado = novoValor;

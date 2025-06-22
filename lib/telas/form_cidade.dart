@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_corretora/componentes/campo_opcoes.dart';
+import 'package:projeto_corretora/componentes/entrada_select.dart';
+import 'package:projeto_corretora/componentes/entrada_texto.dart';
 import 'package:projeto_corretora/dto/dto.dart';
-import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
+import 'package:projeto_corretora/utils/validacao.dart';
 
 class Estado extends DTO {
   Estado({required super.id, required super.nome});
@@ -64,16 +65,16 @@ class _FormCidadeState extends State<FormCidade> {
           key: _formKey,
           child: ListView(
             children: [
-              buildTextField(
-                _nomeController,
-                'Nome',
-                validators: [FieldValidatorType.required],
+              EntradaTexto(
+                controller: _nomeController,
+                label: 'Nome',
+                validator:  ValidadorBuilder().obrigatorioObjeto,
               ),
-              CampoOpcoes<Estado>(
+              EntradaSelect<Estado>(
                 opcoes: _estadoOpcoes,
                 valorSelecionado: _estadoSelecionado,
                 rotulo: 'Estado',
-                eObrigatorio: true,
+                validator: ValidadorBuilder().obrigatorioObjeto,
                 textoPadrao: 'Selecione um Estado',
                 onChanged: (estado) {
                   setState(() {

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
 import 'package:projeto_corretora/componentes/busca_multipla.dart';
-import 'package:projeto_corretora/componentes/campo_opcoes.dart';
+import 'package:projeto_corretora/componentes/entrada_numerica.dart';
+import 'package:projeto_corretora/componentes/entrada_opcao.dart';
+import 'package:projeto_corretora/componentes/entrada_select.dart';
+import 'package:projeto_corretora/componentes/entrada_texto.dart';
 import 'package:projeto_corretora/telas/form_pessoa.dart';
 import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
 import 'package:flutter/services.dart';
 import 'package:projeto_corretora/dto/dto.dart';
+import 'package:projeto_corretora/utils/validacao.dart';
 
 class Cidade extends DTO {
   Cidade({required super.id, required super.nome});
@@ -92,11 +96,11 @@ class _FormCasaState extends State<FormCasa> {
           key: _formKey,
           child: ListView(
             children: [
-              CampoOpcoes<Cidade>(
+              EntradaSelect<Cidade>(
                 opcoes: _cidadeOpcoes,
                 valorSelecionado: _cidadeSelecionada,
                 rotulo: 'Cidade',
-                eObrigatorio: true,
+                validator: ValidadorBuilder().obrigatorioObjeto,
                 textoPadrao: 'Selecione uma cidade',
                 onChanged: (cidade) {
                   setState(() {
@@ -104,49 +108,52 @@ class _FormCasaState extends State<FormCasa> {
                   });
                 },
               ),
-              buildTextField(
-                _bairroController,
-                'Bairro',
-                validators: [FieldValidatorType.required],
+              EntradaTexto(
+                controller: _bairroController,
+                label: 'Bairro',
+                validator: ValidadorBuilder().obrigatorio().build(),
               ),
-              buildTextField(
-                _logradouroController,
-                'Logradouro',
-                validators: [FieldValidatorType.required],
+              EntradaTexto(
+                controller: _logradouroController,
+                label: 'Logradouro',
+                validator: ValidadorBuilder().obrigatorio().build(),
               ),
-              buildTextField(
-                _numeroController,
-                'Nº',
+              EntradaTexto(
+                controller: _numeroController,
+                label: 'Nº',
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                validators: [FieldValidatorType.required],
+                validator: ValidadorBuilder().obrigatorio().build(),
               ),
-              buildDropdownField(
-                'Tipo',
-                tiposLista,
-                (value) {
+              EntradaOpcao(
+                rotulo: 'Tipo',
+                opcoes: tiposLista,
+                onChanged: (value) {
                   setState(() {
                     _tipoSelecionado = value;
                   });
                 },
-                _tipoSelecionado,
-                validators: [FieldValidatorType.required],
+                valorSelecionado: _tipoSelecionado,
+                validator: ValidadorBuilder().obrigatorioObjeto,
               ),
-              buildTextField(
-                _areaController,
-                'Área',
+              EntradaNumerica(
+                controller: _areaController,
+                label: 'Área',
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                validators: [FieldValidatorType.required],
+                validator: ValidadorBuilder().obrigatorio().build(),
               ),
-              buildTextField(
-                _precoController,
-                'Preço',
+              EntradaNumerica(
+                controller: _precoController,
+                label: 'Preço',
                 keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                validators: [FieldValidatorType.required],
+                inputFormatters: [MaskUtils.realMask],
+                validator: ValidadorBuilder().obrigatorio().build(),
               ),
-              buildTextField(_descricaoController, 'Descrição'),
+              EntradaTexto(
+                controller: _descricaoController,
+                label: 'Descrição',
+              ),
               CampoBuscaMultipla<Usuario>(
                 opcoes: _usuariosOpcoes,
                 rotulo: 'Usuários',

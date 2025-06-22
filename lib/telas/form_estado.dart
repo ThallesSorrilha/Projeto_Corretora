@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
-import 'package:projeto_corretora/utils/personalizacao_formulario.dart';
+import 'package:projeto_corretora/componentes/entrada_texto.dart';
+import 'package:projeto_corretora/utils/validacao.dart';
 
 class FormEstado extends StatefulWidget {
   const FormEstado({super.key});
@@ -33,9 +34,9 @@ class _FormEstadoState extends State<FormEstado> {
       //...
       print('Estado salvo: $estadoData');
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Estado salvo com sucesso!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Estado salvo com sucesso!')),
+      );
 
       //Navigator.of(context).pop();
     }
@@ -51,15 +52,15 @@ class _FormEstadoState extends State<FormEstado> {
           key: _formKey,
           child: ListView(
             children: [
-              buildTextField(
-                _nomeController,
-                'Nome',
-                validators: [FieldValidatorType.required],
+              EntradaTexto(
+                controller: _nomeController,
+                label: 'Nome',
+                validator: ValidadorBuilder().obrigatorio().build(),
               ),
-              buildTextField(
-                _siglaController,
-                'Sigla',
-                validators: [FieldValidatorType.required],
+              EntradaTexto(
+                controller: _siglaController,
+                label: 'Sigla',
+                validator: ValidadorBuilder().obrigatorio().build(),
               ),
               ElevatedButton(onPressed: _salvar, child: Text('Salvar')),
             ],
