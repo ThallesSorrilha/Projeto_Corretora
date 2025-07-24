@@ -5,7 +5,7 @@ class CasaDTO extends DTO {
   final double preco;
   final int cidadeId;
   final bool ativa;
-  final bool? descricao;
+  final String? descricao;
 
   CasaDTO({
     super.id,
@@ -14,6 +14,6 @@ class CasaDTO extends DTO {
     required this.preco,
     required this.cidadeId,
     this.ativa = true,
-    this.descricao
+    this.descricao,
   });
 }
