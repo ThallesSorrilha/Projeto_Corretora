@@ -15,6 +15,7 @@ class FormCidade extends StatefulWidget {
 
 class _FormCidadeState extends State<FormCidade> {
   final _formKey = GlobalKey<FormState>();
+  
   final TextEditingController _nomeController = TextEditingController();
 
   List<EstadoDTO> _estadosOpcoes = [];

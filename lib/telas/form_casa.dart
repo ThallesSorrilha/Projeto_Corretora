@@ -5,26 +5,15 @@ import 'package:projeto_corretora/componentes/entrada_numerica.dart';
 import 'package:projeto_corretora/componentes/entrada_opcao.dart';
 import 'package:projeto_corretora/componentes/entrada_select.dart';
 import 'package:projeto_corretora/componentes/entrada_texto.dart';
-import 'package:projeto_corretora/telas/form_pessoa.dart';
+import 'package:projeto_corretora/dao/dao_cidade.dart';
+import 'package:projeto_corretora/dao/dao_pessoa.dart';
+import 'package:projeto_corretora/dto/dto_cidade.dart';
+import 'package:projeto_corretora/dto/dto_pessoa.dart';
 import 'package:projeto_corretora/utils/mascaras.dart';
 import 'package:flutter/services.dart';
-import 'package:projeto_corretora/dto/dto.dart';
 import 'package:projeto_corretora/utils/validacao.dart';
 import 'package:projeto_corretora/utils/definicoes_gerais.dart';
 import 'package:projeto_corretora/componentes/botao_interruptor.dart';
-
-class Cidade extends DTO {
-  Cidade({required super.id, required super.nome});
-}
-
-List<Cidade> selectCidades = [
-  Cidade(id: 1, nome: 'Navegantes'),
-  Cidade(id: 2, nome: 'Florianópolis'),
-  Cidade(id: 3, nome: 'Curitiba'),
-  Cidade(id: 4, nome: 'Maringá'),
-  Cidade(id: 5, nome: 'Ouro Preto'),
-  Cidade(id: 6, nome: 'Belo Horizonte'),
-];
 
 class FormCasa extends StatefulWidget {
   const FormCasa({super.key});
@@ -44,17 +33,39 @@ class _FormCasaState extends State<FormCasa> {
   final TextEditingController _precoController = TextEditingController();
   final TextEditingController _descricaoController = TextEditingController();
 
-  final List<Cidade> _cidadeOpcoes = selectCidades;
-  final List<Usuario> _usuariosOpcoes = selectUsuarios;
-
-  Cidade? _cidadeSelecionada;
   String? _tipoSelecionado;
-  List<Usuario> _usuariosSelecionados = [];
-
   bool _ativo = true;
+
+  List<CidadeDTO> _cidadesOpcoes = [];
+  CidadeDTO? _cidadesSelecionadas;
+
+  List<PessoaDTO> _pessoasOpcoes = [];
+  List<PessoaDTO>? _pessoasSelecionadas;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarCidades();
+    _carregarPessoas();
+  }
+
+  Future<void> _carregarCidades() async {
+    final cidades = await DAOCidade().consultarTodos();
+    setState(() {
+      _cidadesOpcoes = cidades;
+    });
+  }
+
+  Future<void> _carregarPessoas() async {
+    final pessoas = await DAOPessoa().consultarTodos();
+    setState(() {
+      _pessoasOpcoes = pessoas;
+    });
+  }
 
   @override
   void dispose() {
+    _nomeController.dispose();
     _bairroController.dispose();
     _logradouroController.dispose();
     _numeroController.dispose();
@@ -68,7 +79,8 @@ class _FormCasaState extends State<FormCasa> {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
       final casaData = {
-        'cidade': _cidadeSelecionada,
+        'nome': _bairroController.text.trim(),
+        'cidade': _cidadesSelecionadas,
         'bairro': _bairroController.text.trim(),
         'logradouro': _logradouroController.text.trim(),
         'numero': _numeroController.text.trim(),
@@ -77,10 +89,9 @@ class _FormCasaState extends State<FormCasa> {
         'area': _areaController.text.trim(),
         'preco': _precoController.text.trim(),
         'descricao': _descricaoController.text.trim(),
-        'usuarios': _usuariosSelecionados,
+        'usuarios': _pessoasSelecionadas,
       };
 
-      //...
       print('Casa salva: $casaData');
 
       ScaffoldMessenger.of(
@@ -106,15 +117,15 @@ class _FormCasaState extends State<FormCasa> {
                 label: 'Nome da casa',
                 validator: ValidadorBuilder().obrigatorio().build(),
               ),
-              EntradaSelect<Cidade>(
-                opcoes: _cidadeOpcoes,
-                valorSelecionado: _cidadeSelecionada,
+              EntradaSelect<CidadeDTO>(
+                opcoes: _cidadesOpcoes,
+                valorSelecionado: _cidadesSelecionadas,
                 rotulo: 'Cidade',
                 validator: ValidadorBuilder().obrigatorioObjeto,
                 textoPadrao: 'Selecione uma cidade',
                 onChanged: (cidade) {
                   setState(() {
-                    _cidadeSelecionada = cidade;
+                    _cidadesSelecionadas = cidade;
                   });
                 },
               ),
@@ -173,13 +184,13 @@ class _FormCasaState extends State<FormCasa> {
                 controller: _descricaoController,
                 label: 'Descrição',
               ),
-              CampoBuscaMultipla<Usuario>(
-                opcoes: _usuariosOpcoes,
+              CampoBuscaMultipla<PessoaDTO>(
+                opcoes: _pessoasOpcoes,
                 rotulo: 'Usuários',
                 textoPadrao: 'Selecione um ou mais usuários',
                 onChanged: (usuarios) {
                   setState(() {
-                    _usuariosSelecionados = usuarios;
+                    _pessoasSelecionadas = usuarios;
                   });
                 },
               ),

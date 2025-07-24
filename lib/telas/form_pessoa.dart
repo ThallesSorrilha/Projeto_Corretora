@@ -2,35 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
 import 'package:projeto_corretora/componentes/entrada_select.dart';
 import 'package:projeto_corretora/componentes/entrada_texto.dart';
-import 'package:projeto_corretora/dto/dto.dart';
+import 'package:projeto_corretora/dao/dao_cidade.dart';
+import 'package:projeto_corretora/dto/dto_cidade.dart';
 import 'package:projeto_corretora/utils/mascaras.dart';
 import 'package:projeto_corretora/utils/validacao.dart';
-
-class Cidade extends DTO {
-  Cidade({required super.id, required super.nome});
-}
-
-class Usuario extends DTO {
-  Usuario({required super.id, required super.nome});
-}
-
-List<Cidade> selectCidades = [
-  Cidade(id: 1, nome: 'Navegantes'),
-  Cidade(id: 2, nome: 'Florianópolis'),
-  Cidade(id: 3, nome: 'Curitiba'),
-  Cidade(id: 4, nome: 'Maringá'),
-  Cidade(id: 5, nome: 'Ouro Preto'),
-  Cidade(id: 6, nome: 'Belo Horizonte'),
-];
-
-List<Usuario> selectUsuarios = [
-  Usuario(id: 1, nome: 'Cleiton'),
-  Usuario(id: 2, nome: 'Jorge'),
-  Usuario(id: 3, nome: 'Betinho'),
-  Usuario(id: 4, nome: 'Cleonice'),
-  Usuario(id: 5, nome: 'Florentina'),
-  Usuario(id: 6, nome: 'Zazá'),
-];
 
 class FormPessoa extends StatefulWidget {
   const FormPessoa({super.key});
@@ -47,9 +22,21 @@ class _FormPessoaState extends State<FormPessoa> {
   final TextEditingController _telefoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  final List<Cidade> _cidadeOpcoes = selectCidades;
+  List<CidadeDTO> _cidadesOpcoes = [];
+  CidadeDTO? _cidadesSelecionadas;
 
-  Cidade? _cidadeSelecionada;
+  @override
+  void initState() {
+    super.initState();
+    _carregarCidades();
+  }
+
+  Future<void> _carregarCidades() async {
+    final cidades = await DAOCidade().consultarTodos();
+    setState(() {
+      _cidadesOpcoes = cidades;
+    });
+  }
 
   @override
   void dispose() {
@@ -68,10 +55,9 @@ class _FormPessoaState extends State<FormPessoa> {
         'sobrenome': _sobrenomeController.text.trim(),
         'telefone': _telefoneController.text.trim(),
         'email': _emailController.text.trim(),
-        'cidade': _cidadeSelecionada,
+        'cidade': _cidadesSelecionadas,
       };
 
-      //...
       print('Usuário salvo: $usuarioData');
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -114,15 +100,15 @@ class _FormPessoaState extends State<FormPessoa> {
                 label: 'E-mail',
                 validator: ValidadorBuilder().email().build(),
               ),
-              EntradaSelect<Cidade>(
-                opcoes: _cidadeOpcoes,
-                valorSelecionado: _cidadeSelecionada,
+              EntradaSelect<CidadeDTO>(
+                opcoes: _cidadesOpcoes,
+                valorSelecionado: _cidadesSelecionadas,
                 rotulo: 'Cidade',
                 validator: ValidadorBuilder().obrigatorioObjeto,
                 textoPadrao: 'Selecione uma cidade',
                 onChanged: (cidade) {
                   setState(() {
-                    _cidadeSelecionada = cidade;
+                    _cidadesSelecionadas = cidade;
                   });
                 },
               ),
