@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/entrada_select.dart';
 import 'package:projeto_corretora/componentes/entrada_texto.dart';
-import 'package:projeto_corretora/dto/dto.dart';
 import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
 import 'package:projeto_corretora/utils/validacao.dart';
-
-class Estado extends DTO {
-  Estado({required super.id, required super.nome});
-}
-
-List<Estado> selectEstados = [
-  Estado(id: 1, nome: 'Santa Catarina'),
-  Estado(id: 2, nome: 'Paraná'),
-  Estado(id: 3, nome: 'Minas Gerais'),
-];
+import 'package:projeto_corretora/dto/dto_estado.dart';
+import 'package:projeto_corretora/dao/dao_estado.dart';
 
 class FormCidade extends StatefulWidget {
   const FormCidade({super.key});
@@ -24,11 +15,23 @@ class FormCidade extends StatefulWidget {
 
 class _FormCidadeState extends State<FormCidade> {
   final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _nomeController = TextEditingController();
-  final List<Estado> _estadoOpcoes = selectEstados;
 
-  Estado? _estadoSelecionado;
+  List<EstadoDTO> _estadosOpcoes = [];
+  EstadoDTO? _estadoSelecionado;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarEstados();
+  }
+
+  Future<void> _carregarEstados() async {
+    final estados = await DAOEstado().consultarTodos();
+    setState(() {
+      _estadosOpcoes = estados;
+    });
+  }
 
   @override
   void dispose() {
@@ -44,7 +47,6 @@ class _FormCidadeState extends State<FormCidade> {
         'estado': _estadoSelecionado,
       };
 
-      //...
       print('Cidade salva: $cidadeData');
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -68,10 +70,10 @@ class _FormCidadeState extends State<FormCidade> {
               EntradaTexto(
                 controller: _nomeController,
                 label: 'Nome',
-                validator:  ValidadorBuilder().obrigatorioObjeto,
+                validator: ValidadorBuilder().obrigatorio().build(),
               ),
-              EntradaSelect<Estado>(
-                opcoes: _estadoOpcoes,
+              EntradaSelect<EstadoDTO>(
+                opcoes: _estadosOpcoes,
                 valorSelecionado: _estadoSelecionado,
                 rotulo: 'Estado',
                 validator: ValidadorBuilder().obrigatorioObjeto,
