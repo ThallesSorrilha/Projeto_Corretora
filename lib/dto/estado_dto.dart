@@ -1,11 +1,11 @@
-class EstadoDTO {
-  final int? id;
-  final String nome;
+import 'package:projeto_corretora/dto/dto.dart';
+
+class EstadoDTO extends DTO{
   final String sigla;
 
   EstadoDTO({
-    this.id,
-    required this.nome,
+    super.id,
+    required super.nome,
     required this.sigla,
   });
 }

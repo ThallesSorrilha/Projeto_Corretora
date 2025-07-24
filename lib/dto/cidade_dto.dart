@@ -1,11 +1,11 @@
-class CidadeDTO {
-  final int? id;
-  final String nome;
+import 'package:projeto_corretora/dto/dto.dart';
+
+class CidadeDTO extends DTO{
   final int estadoId;
 
   CidadeDTO({
-    this.id,
-    required this.nome,
+    super.id,
+    required super.nome,
     required this.estadoId,
   });
 }

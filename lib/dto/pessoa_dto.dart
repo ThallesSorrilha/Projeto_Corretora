@@ -1,14 +1,14 @@
-class PessoaDTO {
-  final int? id;
-  final String nome;
+import 'package:projeto_corretora/dto/dto.dart';
+
+class PessoaDTO extends DTO{
   final String sobrenome;
   final String telefone;
   final String email;
   final int cidadeId;
 
   PessoaDTO({
-    this.id,
-    required this.nome,
+    super.id,
+    required super.nome,
     required this.sobrenome,
     required this.telefone,
     required this.email,
