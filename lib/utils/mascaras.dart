@@ -13,20 +13,3 @@ class MaskUtils {
   );
   static final cpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
 }
-
-/*Widget buildSwitchField(
-  String label,
-  bool value,
-  ValueChanged<bool> onChanged,
-) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8.0),
-    child: SwitchListTile(
-      title: Text(label),
-      value: value,
-      onChanged: onChanged,
-      activeColor: Colors.green,
-      inactiveThumbColor: Colors.red,
-    ),
-  );
-}*/

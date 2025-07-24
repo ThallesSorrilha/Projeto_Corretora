@@ -12,15 +12,12 @@ class Conexao {
 
     try {
       if (kIsWeb) {
-        // Ambiente Web
         databaseFactory = databaseFactoryFfiWeb;
         _db = await databaseFactory.openDatabase('projeto_corretora_web.db');
       } else {
-        // Ambiente Mobile/Desktop
         final dbPath = await getDatabasesPath();
         final path = p.join(dbPath, 'projeto_corretora.db');
 
-        // Resetar banco (apenas para desenvolvimento)
         await deleteDatabase(path);
 
         _db = await openDatabase(

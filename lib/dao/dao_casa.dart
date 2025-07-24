@@ -3,10 +3,14 @@ import 'package:projeto_corretora/conexao.dart';
 
 class DAOCasa {
   final String sqlInsert = '''
-    INSERT INTO casa (nome, endereco, preco, cidadeId, ativa, descricao) VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO casa (
+      nome, cidadeId, bairro, logradouro, numero, tipo, area, preco, ativa, descricao, usuarios
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   ''';
   final String sqlUpdate = '''
-    UPDATE casa SET nome = ?, endereco = ?, preco = ?, cidadeId = ?, ativa = ?, descricao = ? WHERE id = ?
+    UPDATE casa SET
+      nome = ?, cidadeId = ?, bairro = ?, logradouro = ?, numero = ?, tipo = ?, area = ?, preco = ?, ativa = ?, descricao = ?, usuarios = ?
+    WHERE id = ?
   ''';
   final String sqlSelectAll = '''
     SELECT * FROM casa
@@ -23,20 +27,30 @@ class DAOCasa {
     if (dto.id == null) {
       return await db.rawInsert(sqlInsert, [
         dto.nome,
-        dto.endereco,
-        dto.preco,
         dto.cidadeId,
+        dto.bairro,
+        dto.logradouro,
+        dto.numero,
+        dto.tipo,
+        dto.area,
+        dto.preco,
         dto.ativa ? 1 : 0,
         dto.descricao,
+        dto.usuarios,
       ]);
     } else {
       return await db.rawUpdate(sqlUpdate, [
         dto.nome,
-        dto.endereco,
-        dto.preco,
         dto.cidadeId,
+        dto.bairro,
+        dto.logradouro,
+        dto.numero,
+        dto.tipo,
+        dto.area,
+        dto.preco,
         dto.ativa ? 1 : 0,
         dto.descricao,
+        dto.usuarios,
         dto.id,
       ]);
     }
@@ -64,14 +78,22 @@ class DAOCasa {
     return CasaDTO(
       id: map['id'] as int?,
       nome: map['nome'] as String,
-      endereco: map['endereco'] as String,
+      cidadeId: map['cidadeId'] as int,
+      bairro: map['bairro'] as String,
+      logradouro: map['logradouro'] as String,
+      numero: map['numero'] as int,
+      tipo: map['tipo'] as String,
+      area:
+          map['area'] is int
+              ? (map['area'] as int).toDouble()
+              : map['area'] as double,
       preco:
           map['preco'] is int
               ? (map['preco'] as int).toDouble()
               : map['preco'] as double,
-      cidadeId: map['cidadeId'] as int,
       ativa: (map['ativa'] == 1),
       descricao: map['descricao'] as String?,
+      usuarios: map['usuarios'] as int?,
     );
   }
 
@@ -79,11 +101,16 @@ class DAOCasa {
     return {
       'id': dto.id,
       'nome': dto.nome,
-      'endereco': dto.endereco,
-      'preco': dto.preco,
       'cidadeId': dto.cidadeId,
+      'bairro': dto.bairro,
+      'logradouro': dto.logradouro,
+      'numero': dto.numero,
+      'tipo': dto.tipo,
+      'area': dto.area,
+      'preco': dto.preco,
       'ativa': dto.ativa ? 1 : 0,
       'descricao': dto.descricao,
+      'usuarios': dto.usuarios,
     };
   }
 }

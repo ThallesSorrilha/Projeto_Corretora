@@ -1,19 +1,29 @@
 import 'package:projeto_corretora/dto/dto.dart';
 
 class CasaDTO extends DTO {
-  final String endereco;
-  final double preco;
   final int cidadeId;
+  final String bairro;
+  final String logradouro;
+  final int numero;
+  final String tipo;
+  final double area;
+  final double preco;
   final bool ativa;
   final String? descricao;
+  final int? usuarios;
 
   CasaDTO({
     super.id,
     required super.nome,
-    required this.endereco,
-    required this.preco,
     required this.cidadeId,
-    this.ativa = true,
+    required this.bairro,
+    required this.logradouro,
+    required this.numero,
+    required this.tipo,
+    required this.area,
+    required this.preco,
+    required this.ativa,
     this.descricao,
+    this.usuarios,
   });
 }

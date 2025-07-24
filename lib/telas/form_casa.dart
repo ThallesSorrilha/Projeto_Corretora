@@ -10,6 +10,8 @@ import 'package:projeto_corretora/utils/mascaras.dart';
 import 'package:flutter/services.dart';
 import 'package:projeto_corretora/dto/dto.dart';
 import 'package:projeto_corretora/utils/validacao.dart';
+import 'package:projeto_corretora/utils/definicoes_gerais.dart';
+import 'package:projeto_corretora/componentes/botao_interruptor.dart';
 
 class Cidade extends DTO {
   Cidade({required super.id, required super.nome});
@@ -34,6 +36,7 @@ class FormCasa extends StatefulWidget {
 class _FormCasaState extends State<FormCasa> {
   final _formKey = GlobalKey<FormState>();
 
+  final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _bairroController = TextEditingController();
   final TextEditingController _logradouroController = TextEditingController();
   final TextEditingController _numeroController = TextEditingController();
@@ -43,11 +46,12 @@ class _FormCasaState extends State<FormCasa> {
 
   final List<Cidade> _cidadeOpcoes = selectCidades;
   final List<Usuario> _usuariosOpcoes = selectUsuarios;
-  final List<String> tiposLista = ['Casa', 'Apartamento'];
 
   Cidade? _cidadeSelecionada;
   String? _tipoSelecionado;
   List<Usuario> _usuariosSelecionados = [];
+
+  bool _ativo = true;
 
   @override
   void dispose() {
@@ -68,6 +72,7 @@ class _FormCasaState extends State<FormCasa> {
         'bairro': _bairroController.text.trim(),
         'logradouro': _logradouroController.text.trim(),
         'numero': _numeroController.text.trim(),
+        'ativa': _ativo,
         'tipo': _tipoSelecionado,
         'area': _areaController.text.trim(),
         'preco': _precoController.text.trim(),
@@ -96,6 +101,11 @@ class _FormCasaState extends State<FormCasa> {
           key: _formKey,
           child: ListView(
             children: [
+              EntradaTexto(
+                controller: _nomeController,
+                label: 'Nome da casa',
+                validator: ValidadorBuilder().obrigatorio().build(),
+              ),
               EntradaSelect<Cidade>(
                 opcoes: _cidadeOpcoes,
                 valorSelecionado: _cidadeSelecionada,
@@ -125,9 +135,18 @@ class _FormCasaState extends State<FormCasa> {
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: ValidadorBuilder().obrigatorio().build(),
               ),
+              BotaoInterruptor(
+                label: "Ativo?",
+                value: _ativo,
+                onChanged: (novoValor) {
+                  setState(() {
+                    _ativo = novoValor;
+                  });
+                },
+              ),
               EntradaOpcao(
                 rotulo: 'Tipo',
-                opcoes: tiposLista,
+                opcoes: tiposImoveis,
                 onChanged: (value) {
                   setState(() {
                     _tipoSelecionado = value;
