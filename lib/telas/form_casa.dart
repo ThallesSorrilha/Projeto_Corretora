@@ -5,8 +5,10 @@ import 'package:projeto_corretora/componentes/entrada_numerica.dart';
 import 'package:projeto_corretora/componentes/entrada_opcao.dart';
 import 'package:projeto_corretora/componentes/entrada_select.dart';
 import 'package:projeto_corretora/componentes/entrada_texto.dart';
+import 'package:projeto_corretora/dao/dao_casa.dart';
 import 'package:projeto_corretora/dao/dao_cidade.dart';
 import 'package:projeto_corretora/dao/dao_pessoa.dart';
+import 'package:projeto_corretora/dto/dto_casa.dart';
 import 'package:projeto_corretora/dto/dto_cidade.dart';
 import 'package:projeto_corretora/dto/dto_pessoa.dart';
 import 'package:projeto_corretora/utils/mascaras.dart';
@@ -50,14 +52,14 @@ class _FormCasaState extends State<FormCasa> {
   }
 
   Future<void> _carregarCidades() async {
-    final cidades = await DAOCidade().consultarTodos();
+    final cidades = await CidadeDAO().consultarTodos();
     setState(() {
       _cidadesOpcoes = cidades;
     });
   }
 
   Future<void> _carregarPessoas() async {
-    final pessoas = await DAOPessoa().consultarTodos();
+    final pessoas = await PessoaDAO().consultarTodos();
     setState(() {
       _pessoasOpcoes = pessoas;
     });
@@ -75,24 +77,34 @@ class _FormCasaState extends State<FormCasa> {
     super.dispose();
   }
 
-  void _salvar() {
+  void _salvar() async {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      final casaData = {
-        'nome': _bairroController.text.trim(),
-        'cidade': _cidadesSelecionadas,
-        'bairro': _bairroController.text.trim(),
-        'logradouro': _logradouroController.text.trim(),
-        'numero': _numeroController.text.trim(),
-        'ativa': _ativo,
-        'tipo': _tipoSelecionado,
-        'area': _areaController.text.trim(),
-        'preco': _precoController.text.trim(),
-        'descricao': _descricaoController.text.trim(),
-        'usuarios': _pessoasSelecionadas,
-      };
-
-      print('Casa salva: $casaData');
+      final casa = CasaDTO(
+        nome: _nomeController.text.trim(),
+        cidadeId: _cidadesSelecionadas!.id!,
+        bairro: _bairroController.text.trim(),
+        logradouro: _logradouroController.text.trim(),
+        numero: int.tryParse(_numeroController.text.trim()) ?? 0,
+        ativa: _ativo,
+        tipo: _tipoSelecionado ?? '',
+        area: double.tryParse(_areaController.text.trim()) ?? 0.0,
+        preco:
+            double.tryParse(
+              _precoController.text
+                  .trim()
+                  .replaceAll('R\$', '')
+                  .replaceAll('.', '')
+                  .replaceAll(',', '.'),
+            ) ??
+            0.0,
+        descricao:
+            _descricaoController.text.trim().isEmpty
+                ? null
+                : _descricaoController.text.trim(),
+        usuarios: null,
+      );
+      await CasaDao().salvar(casa);
 
       ScaffoldMessenger.of(
         context,

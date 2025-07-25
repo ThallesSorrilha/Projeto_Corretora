@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
 import 'package:projeto_corretora/componentes/entrada_texto.dart';
+import 'package:projeto_corretora/dao/dao_estado.dart';
+import 'package:projeto_corretora/dto/dto_estado.dart';
 import 'package:projeto_corretora/utils/validacao.dart';
 
 class FormEstado extends StatefulWidget {
@@ -23,16 +25,15 @@ class _FormEstadoState extends State<FormEstado> {
     super.dispose();
   }
 
-  void _salvar() {
+  void _salvar() async {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      final estadoData = {
-        'nome': _nomeController.text.trim(),
-        'sigla': _siglaController.text.trim(),
-      };
+      final estado = EstadoDTO(
+        nome: _nomeController.text.trim(),
+        sigla: _siglaController.text.trim(),
+      );
 
-      //...
-      print('Estado salvo: $estadoData');
+      await EstadoDAO().salvar(estado);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Estado salvo com sucesso!')),

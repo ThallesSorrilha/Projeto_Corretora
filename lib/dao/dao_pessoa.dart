@@ -1,7 +1,7 @@
 import 'package:projeto_corretora/dto/dto_pessoa.dart';
 import 'package:projeto_corretora/conexao.dart';
 
-class DAOPessoa {
+class PessoaDAO {
   final String sqlInsert = '''
     INSERT INTO pessoa (nome, sobrenome, telefone, email, cidadeId) VALUES (?, ?, ?, ?, ?)
   ''';

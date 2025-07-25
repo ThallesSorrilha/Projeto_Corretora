@@ -18,7 +18,7 @@ class Conexao {
         final dbPath = await getDatabasesPath();
         final path = p.join(dbPath, 'projeto_corretora.db');
 
-        await deleteDatabase(path);
+        //await deleteDatabase(path);
 
         _db = await openDatabase(
           path,

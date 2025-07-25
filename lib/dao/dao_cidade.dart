@@ -1,7 +1,7 @@
 import 'package:projeto_corretora/dto/dto_cidade.dart';
 import 'package:projeto_corretora/conexao.dart';
 
-class DAOCidade {
+class CidadeDAO {
   final String sqlInsert = '''
     INSERT INTO cidade (nome, estadoId) VALUES (?, ?)
   ''';
@@ -54,10 +54,6 @@ class DAOCidade {
   }
 
   Map<String, dynamic> toMap(CidadeDTO dto) {
-    return {
-      'id': dto.id,
-      'nome': dto.nome,
-      'estadoId': dto.estadoId,
-    };
+    return {'id': dto.id, 'nome': dto.nome, 'estadoId': dto.estadoId};
   }
 }

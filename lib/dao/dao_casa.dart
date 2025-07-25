@@ -1,7 +1,7 @@
 import 'package:projeto_corretora/dto/dto_casa.dart';
 import 'package:projeto_corretora/conexao.dart';
 
-class DAOCasa {
+class CasaDao {
   final String sqlInsert = '''
     INSERT INTO casa (
       nome, cidadeId, bairro, logradouro, numero, tipo, area, preco, ativa, descricao, usuarios

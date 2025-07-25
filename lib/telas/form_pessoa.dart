@@ -3,7 +3,9 @@ import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
 import 'package:projeto_corretora/componentes/entrada_select.dart';
 import 'package:projeto_corretora/componentes/entrada_texto.dart';
 import 'package:projeto_corretora/dao/dao_cidade.dart';
+import 'package:projeto_corretora/dao/dao_pessoa.dart';
 import 'package:projeto_corretora/dto/dto_cidade.dart';
+import 'package:projeto_corretora/dto/dto_pessoa.dart';
 import 'package:projeto_corretora/utils/mascaras.dart';
 import 'package:projeto_corretora/utils/validacao.dart';
 
@@ -32,7 +34,7 @@ class _FormPessoaState extends State<FormPessoa> {
   }
 
   Future<void> _carregarCidades() async {
-    final cidades = await DAOCidade().consultarTodos();
+    final cidades = await CidadeDAO().consultarTodos();
     setState(() {
       _cidadesOpcoes = cidades;
     });
@@ -47,18 +49,17 @@ class _FormPessoaState extends State<FormPessoa> {
     super.dispose();
   }
 
-  void _salvar() {
+  void _salvar() async {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      final usuarioData = {
-        'nome': _nomeController.text.trim(),
-        'sobrenome': _sobrenomeController.text.trim(),
-        'telefone': _telefoneController.text.trim(),
-        'email': _emailController.text.trim(),
-        'cidade': _cidadesSelecionadas,
-      };
-
-      print('Usuário salvo: $usuarioData');
+      final pessoa = PessoaDTO(
+        nome: _nomeController.text.trim(),
+        sobrenome: _sobrenomeController.text.trim(),
+        telefone: _telefoneController.text.trim(),
+        email: _emailController.text.trim(),
+        cidadeId: _cidadesSelecionadas!.id!,
+      );
+      await PessoaDAO().salvar(pessoa);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Usuário salvo com sucesso!')),

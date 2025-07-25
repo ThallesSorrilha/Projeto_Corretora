@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/entrada_select.dart';
 import 'package:projeto_corretora/componentes/entrada_texto.dart';
 import 'package:projeto_corretora/componentes/app_bar_salvar.dart';
+import 'package:projeto_corretora/dao/dao_cidade.dart';
+import 'package:projeto_corretora/dto/dto_cidade.dart';
 import 'package:projeto_corretora/utils/validacao.dart';
 import 'package:projeto_corretora/dto/dto_estado.dart';
 import 'package:projeto_corretora/dao/dao_estado.dart';
@@ -28,7 +30,7 @@ class _FormCidadeState extends State<FormCidade> {
   }
 
   Future<void> _carregarEstados() async {
-    final estados = await DAOEstado().consultarTodos();
+    final estados = await EstadoDAO().consultarTodos();
     setState(() {
       _estadosOpcoes = estados;
     });
@@ -40,15 +42,14 @@ class _FormCidadeState extends State<FormCidade> {
     super.dispose();
   }
 
-  void _salvar() {
+  void _salvar() async {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      final cidadeData = {
-        'nome': _nomeController.text.trim(),
-        'estado': _estadoSelecionado,
-      };
-
-      print('Cidade salva: $cidadeData');
+      final cidade = CidadeDTO(
+        nome: _nomeController.text.trim(),
+        estadoId: _estadoSelecionado!.id!,
+      );
+      await CidadeDAO().salvar(cidade);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Cidade salva com sucesso!')),

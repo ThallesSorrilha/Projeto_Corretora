@@ -1,7 +1,7 @@
 import 'package:projeto_corretora/dto/dto_estado.dart';
 import 'package:projeto_corretora/conexao.dart';
 
-class DAOEstado {
+class EstadoDAO {
   final String sqlInsert = '''
     INSERT INTO estado (nome, sigla) VALUES (?, ?)
   ''';
