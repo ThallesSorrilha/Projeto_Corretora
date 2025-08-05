@@ -28,18 +28,25 @@ class _FormEstadoState extends State<FormEstado> {
   void _salvar() async {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      final estado = EstadoDTO(
-        nome: _nomeController.text.trim(),
-        sigla: _siglaController.text.trim(),
-      );
+      try {
+        final estado = EstadoDTO(
+          nome: _nomeController.text.trim(),
+          sigla: _siglaController.text.trim(),
+        );
+        await EstadoDAO().salvar(estado);
 
-      await EstadoDAO().salvar(estado);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Estado salvo com sucesso!')),
+        );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Estado salvo com sucesso!')),
-      );
-
-      //Navigator.of(context).pop();
+        //Navigator.of(context).pop();
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Erro ao salvar estado: $e')));
+        // Log the error for debugging:
+        print('Erro ao salvar estado: $e');
+      }
     }
   }
 

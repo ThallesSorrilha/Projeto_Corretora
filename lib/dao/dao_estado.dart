@@ -54,10 +54,6 @@ class EstadoDAO {
   }
 
   Map<String, dynamic> toMap(EstadoDTO dto) {
-    return {
-      'id': dto.id,
-      'nome': dto.nome,
-      'sigla': dto.sigla,
-    };
+    return {'id': dto.id, 'nome': dto.nome, 'sigla': dto.sigla};
   }
 }

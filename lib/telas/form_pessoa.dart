@@ -49,15 +49,23 @@ class _FormPessoaState extends State<FormPessoa> {
     super.dispose();
   }
 
-  void _salvar() async {
-    final formValido = _formKey.currentState?.validate() ?? false;
-    if (formValido) {
+void _salvar() async {
+  final formValido = _formKey.currentState?.validate() ?? false;
+  if (formValido) {
+    if (_cidadesSelecionadas == null || _cidadesSelecionadas!.id == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, selecione uma cidade válida!')),
+      );
+      return;
+    }
+
+    try {
       final pessoa = PessoaDTO(
         nome: _nomeController.text.trim(),
         sobrenome: _sobrenomeController.text.trim(),
         telefone: _telefoneController.text.trim(),
         email: _emailController.text.trim(),
-        cidadeId: _cidadesSelecionadas!.id!,
+        cidadeId: _cidadesSelecionadas!.id!, // A verificação acima garante que não é null
       );
       await PessoaDAO().salvar(pessoa);
 
@@ -65,9 +73,16 @@ class _FormPessoaState extends State<FormPessoa> {
         const SnackBar(content: Text('Usuário salvo com sucesso!')),
       );
 
-      //Navigator.of(context).pop();
+      // Navigator.of(context).pop();
+
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao salvar usuário: $e')),
+      );
+      print('Erro ao salvar usuário: $e');
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {

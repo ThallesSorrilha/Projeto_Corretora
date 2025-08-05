@@ -24,16 +24,6 @@ class EntradaSelect<T extends DTO> extends StatefulWidget {
 }
 
 class _EntradaSelectState<T extends DTO> extends State<EntradaSelect<T>> {
-  late List<T> _opcoesCampo;
-  T? _valorSelecionado;
-
-  @override
-  void initState() {
-    super.initState();
-    _opcoesCampo = List.from(widget.opcoes);
-    _valorSelecionado = widget.valorSelecionado;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,20 +31,17 @@ class _EntradaSelectState<T extends DTO> extends State<EntradaSelect<T>> {
       child: DropdownButtonFormField<T>(
         decoration: InputDecoration(
           labelText: widget.rotulo,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
         isExpanded: true,
-        value: _valorSelecionado,
+        value: widget.valorSelecionado,
         validator: widget.validator,
         onChanged: (T? novoValor) {
-          setState(() {
-            _valorSelecionado = novoValor;
-          });
           widget.onChanged?.call(novoValor);
         },
         items: [
           DropdownMenuItem<T>(value: null, child: Text(widget.textoPadrao)),
-          ..._opcoesCampo.map(
+          ...widget.opcoes.map(
             (op) => DropdownMenuItem<T>(value: op, child: Text(op.nome)),
           ),
         ],

@@ -80,37 +80,51 @@ class _FormCasaState extends State<FormCasa> {
   void _salvar() async {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      final casa = CasaDTO(
-        nome: _nomeController.text.trim(),
-        cidadeId: _cidadesSelecionadas!.id!,
-        bairro: _bairroController.text.trim(),
-        logradouro: _logradouroController.text.trim(),
-        numero: int.tryParse(_numeroController.text.trim()) ?? 0,
-        ativa: _ativo,
-        tipo: _tipoSelecionado ?? '',
-        area: double.tryParse(_areaController.text.trim()) ?? 0.0,
-        preco:
-            double.tryParse(
-              _precoController.text
-                  .trim()
-                  .replaceAll('R\$', '')
-                  .replaceAll('.', '')
-                  .replaceAll(',', '.'),
-            ) ??
-            0.0,
-        descricao:
-            _descricaoController.text.trim().isEmpty
-                ? null
-                : _descricaoController.text.trim(),
-        usuarios: null,
+      if (_cidadesSelecionadas == null || _cidadesSelecionadas!.id == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, selecione uma cidade válida!')),
       );
-      await CasaDao().salvar(casa);
+      return;
+    }
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Casa salva com sucesso!')));
+      try {
+        final casa = CasaDTO(
+          nome: _nomeController.text.trim(),
+          cidadeId: _cidadesSelecionadas!.id!,
+          bairro: _bairroController.text.trim(),
+          logradouro: _logradouroController.text.trim(),
+          numero: int.tryParse(_numeroController.text.trim()) ?? 0,
+          ativa: _ativo,
+          tipo: _tipoSelecionado ?? '',
+          area: double.tryParse(_areaController.text.trim()) ?? 0.0,
+          preco:
+              double.tryParse(
+                _precoController.text
+                    .trim()
+                    .replaceAll('R\$', '')
+                    .replaceAll('.', '')
+                    .replaceAll(',', '.'),
+              ) ??
+              0.0,
+          descricao:
+              _descricaoController.text.trim().isEmpty
+                  ? null
+                  : _descricaoController.text.trim(),
+          usuarios: null,
+        );
+        await CasaDao().salvar(casa);
 
-      //Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Casa salva com sucesso!')),
+        );
+
+        //Navigator.of(context).pop();
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Erro ao salvar casa: $e')));
+        print('Erro ao salvar casa: $e');
+      }
     }
   }
 

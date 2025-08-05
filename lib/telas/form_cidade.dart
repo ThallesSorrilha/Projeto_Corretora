@@ -17,7 +17,7 @@ class FormCidade extends StatefulWidget {
 
 class _FormCidadeState extends State<FormCidade> {
   final _formKey = GlobalKey<FormState>();
-  
+
   final TextEditingController _nomeController = TextEditingController();
 
   List<EstadoDTO> _estadosOpcoes = [];
@@ -45,17 +45,32 @@ class _FormCidadeState extends State<FormCidade> {
   void _salvar() async {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
-      final cidade = CidadeDTO(
-        nome: _nomeController.text.trim(),
-        estadoId: _estadoSelecionado!.id!,
-      );
-      await CidadeDAO().salvar(cidade);
+      if (_estadoSelecionado == null) {
+        // This case should be caught by validator, but as a fallback:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Por favor, selecione um estado!')),
+        );
+        return;
+      }
+      try {
+        final cidade = CidadeDTO(
+          nome: _nomeController.text.trim(),
+          estadoId: _estadoSelecionado!.id!,
+        );
+        await CidadeDAO().salvar(cidade);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cidade salva com sucesso!')),
-      );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Cidade salva com sucesso!')),
+        );
 
-      //Navigator.of(context).pop();
+        //Navigator.of(context).pop();
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Erro ao salvar cidade: $e')));
+        // Log the error for debugging:
+        print('Erro ao salvar cidade: $e');
+      }
     }
   }
 
