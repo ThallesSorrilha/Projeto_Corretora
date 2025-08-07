@@ -8,7 +8,7 @@ class CasaDao {
   final String sqlInsert = '''
     INSERT INTO casa (
       nome, cidadeId, bairro, logradouro, numero, tipo, area, preco, ativa, descricao
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   ''';
   final String sqlUpdate = '''
     UPDATE casa SET

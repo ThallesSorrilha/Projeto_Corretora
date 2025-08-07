@@ -24,7 +24,6 @@ class CampoBuscaOpcoes<T extends DTO> extends StatefulWidget {
 }
 
 class _CampoBuscaOpcoesState<T extends DTO> extends State<CampoBuscaOpcoes<T>> {
-  late List<T> _opcoesFiltradas;
   T? _selecionado;
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -39,26 +38,6 @@ class _CampoBuscaOpcoesState<T extends DTO> extends State<CampoBuscaOpcoes<T>> {
     }
   }
 
-  @override
-  void didUpdateWidget(covariant CampoBuscaOpcoes<T> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.opcoes != widget.opcoes) {
-      _opcoesFiltradas = List.from(widget.opcoes);
-    }
-  }
-
-  void _filtrar(String texto) {
-    setState(() {
-      _opcoesFiltradas =
-          widget.opcoes
-              .where(
-                (item) => item.nome.toLowerCase().contains(texto.toLowerCase()),
-              )
-              .toList();
-      _exibirSugestoes = true;
-    });
-  }
-
   String? _validar(String? texto) {
     if (widget.eObrigatorio && (_selecionado == null)) {
       return 'Selecione uma opção';
@@ -68,7 +47,7 @@ class _CampoBuscaOpcoesState<T extends DTO> extends State<CampoBuscaOpcoes<T>> {
 
   @override
   Widget build(BuildContext context) {
-    _opcoesFiltradas =
+    final List<T> opcoesFiltradas =
         widget.opcoes
             .where(
               (item) => item.nome.toLowerCase().contains(
@@ -82,34 +61,33 @@ class _CampoBuscaOpcoesState<T extends DTO> extends State<CampoBuscaOpcoes<T>> {
       child: Column(
         //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: _controller,
-                  focusNode: _focusNode,
-                  decoration: InputDecoration(
-                    labelText: widget.rotulo,
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: _validar,
-                  onChanged: (text) {
-                    setState(() {
-                      _filtrar(text);
-                    });
-                  },
-                  onTap: () => setState(() => _exibirSugestoes = true),
-                ),
-              ),
-            ],
+          TextFormField(
+            controller: _controller,
+            focusNode: _focusNode,
+            decoration: InputDecoration(
+              labelText: widget.rotulo,
+              border: const OutlineInputBorder(),
+            ),
+            validator: (value) {
+              if (widget.eObrigatorio && _selecionado == null) {
+                return 'Selecione uma opção';
+              }
+              return null;
+            },
+            onChanged: (text) {
+              setState(() {
+                _exibirSugestoes = true;
+              });
+            },
+            onTap: () => setState(() => _exibirSugestoes = true),
           ),
-          if (_exibirSugestoes && _opcoesFiltradas.isNotEmpty)
+          if (_exibirSugestoes && opcoesFiltradas.isNotEmpty)
             Container(
               constraints: const BoxConstraints(maxHeight: 200),
               child: ListView(
                 shrinkWrap: true,
                 children:
-                    _opcoesFiltradas.map((item) {
+                    opcoesFiltradas.map((item) {
                       return ListTile(
                         title: Text(item.nome),
                         onTap: () {
@@ -119,15 +97,6 @@ class _CampoBuscaOpcoesState<T extends DTO> extends State<CampoBuscaOpcoes<T>> {
                             _exibirSugestoes = false;
                           });
                           widget.onChanged?.call(item);
-
-                          // Seleciona o texto inteiro após um pequeno delay
-                          Future.delayed(const Duration(milliseconds: 100), () {
-                            _focusNode.requestFocus();
-                            _controller.selection = TextSelection(
-                              baseOffset: 0,
-                              extentOffset: _controller.text.length,
-                            );
-                          });
                         },
                       );
                     }).toList(),

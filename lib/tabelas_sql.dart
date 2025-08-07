@@ -1,4 +1,3 @@
-// For native platforms (onCreate is called only once)
 const criarTabelas = [
   '''
   CREATE TABLE estado (
@@ -30,9 +29,13 @@ const criarTabelas = [
   CREATE TABLE casa (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
-    endereco TEXT NOT NULL,
     preco REAL NOT NULL,
     cidadeId INTEGER NOT NULL,
+    bairro TEXT NOT NULL,
+    logradouro TEXT NOT NULL,
+    numero INTEGER NOT NULL,
+    tipo TEXT NOT NULL,
+    area DECIMAL NOT NULL,
     ativa INTEGER NOT NULL DEFAULT 1,
     descricao TEXT,
     FOREIGN KEY (cidadeId) REFERENCES cidade(id)
@@ -49,7 +52,6 @@ const criarTabelas = [
   ''',
 ];
 
-// For web platforms (executed every time, so needs IF NOT EXISTS)
 const criarTabelasWeb = [
   '''
   CREATE TABLE IF NOT EXISTS estado (
@@ -81,9 +83,13 @@ const criarTabelasWeb = [
   CREATE TABLE IF NOT EXISTS casa (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
-    endereco TEXT NOT NULL,
     preco REAL NOT NULL,
     cidadeId INTEGER NOT NULL,
+    bairro TEXT NOT NULL,
+    logradouro TEXT NOT NULL,
+    numero INTEGER NOT NULL,
+    tipo TEXT NOT NULL,
+    area DECIMAL NOT NULL,
     ativa INTEGER NOT NULL DEFAULT 1,
     descricao TEXT,
     FOREIGN KEY (cidadeId) REFERENCES cidade(id)
