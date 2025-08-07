@@ -37,7 +37,16 @@ const criarTabelas = [
     descricao TEXT,
     FOREIGN KEY (cidadeId) REFERENCES cidade(id)
   )
+  ''',
   '''
+  CREATE TABLE casa_pessoa (
+    casaId INTEGER NOT NULL,
+    pessoaId INTEGER NOT NULL,
+    FOREIGN KEY (casaId) REFERENCES casa(id) ON DELETE CASCADE,
+    FOREIGN KEY (pessoaId) REFERENCES pessoa(id) ON DELETE CASCADE,
+    PRIMARY KEY (casaId, pessoaId)
+  )
+  ''',
 ];
 
 // For web platforms (executed every time, so needs IF NOT EXISTS)
@@ -79,5 +88,14 @@ const criarTabelasWeb = [
     descricao TEXT,
     FOREIGN KEY (cidadeId) REFERENCES cidade(id)
   )
+  ''',
   '''
+  CREATE TABLE IF NOT EXISTS casa_pessoa (
+    casaId INTEGER NOT NULL,
+    pessoaId INTEGER NOT NULL,
+    FOREIGN KEY (casaId) REFERENCES casa(id) ON DELETE CASCADE,
+    FOREIGN KEY (pessoaId) REFERENCES pessoa(id) ON DELETE CASCADE,
+    PRIMARY KEY (casaId, pessoaId)
+  )
+  ''',
 ];

@@ -1,15 +1,18 @@
 import 'package:projeto_corretora/dto/dto_casa.dart';
 import 'package:projeto_corretora/conexao.dart';
+import 'package:projeto_corretora/dao/dao_casa_pessoa.dart';
 
 class CasaDao {
+  final CasaPessoaDao cpdao = CasaPessoaDao();
+
   final String sqlInsert = '''
     INSERT INTO casa (
-      nome, cidadeId, bairro, logradouro, numero, tipo, area, preco, ativa, descricao, usuarios
+      nome, cidadeId, bairro, logradouro, numero, tipo, area, preco, ativa, descricao
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   ''';
   final String sqlUpdate = '''
     UPDATE casa SET
-      nome = ?, cidadeId = ?, bairro = ?, logradouro = ?, numero = ?, tipo = ?, area = ?, preco = ?, ativa = ?, descricao = ?, usuarios = ?
+      nome = ?, cidadeId = ?, bairro = ?, logradouro = ?, numero = ?, tipo = ?, area = ?, preco = ?, ativa = ?, descricao = ?
     WHERE id = ?
   ''';
   final String sqlSelectAll = '''
@@ -24,8 +27,9 @@ class CasaDao {
 
   Future<int> salvar(CasaDTO dto) async {
     final db = await Conexao.get();
+    int casaId;
     if (dto.id == null) {
-      return await db.rawInsert(sqlInsert, [
+      casaId = await db.rawInsert(sqlInsert, [
         dto.nome,
         dto.cidadeId,
         dto.bairro,
@@ -36,10 +40,9 @@ class CasaDao {
         dto.preco,
         dto.ativa ? 1 : 0,
         dto.descricao,
-        dto.usuarios,
       ]);
     } else {
-      return await db.rawUpdate(sqlUpdate, [
+      await db.rawUpdate(sqlUpdate, [
         dto.nome,
         dto.cidadeId,
         dto.bairro,
@@ -50,10 +53,24 @@ class CasaDao {
         dto.preco,
         dto.ativa ? 1 : 0,
         dto.descricao,
-        dto.usuarios,
         dto.id,
       ]);
+      casaId = dto.id!;
+
+      // Excluir relacionamentos antigos antes de inserir os novos
+      await db.rawDelete(cpdao.sqlDelete, [casaId]);
     }
+
+    // Se houver pessoas selecionadas, salve a relação na tabela de junção
+    if (dto.pessoasIds != null && dto.pessoasIds!.isNotEmpty) {
+      final batch = db.batch();
+      for (final pessoaId in dto.pessoasIds!) {
+        batch.rawInsert(cpdao.sqlInsert, [casaId, pessoaId]);
+      }
+      await batch.commit(noResult: true);
+    }
+
+    return casaId;
   }
 
   Future<List<CasaDTO>> consultarTodos() async {
@@ -93,7 +110,6 @@ class CasaDao {
               : map['preco'] as double,
       ativa: (map['ativa'] == 1),
       descricao: map['descricao'] as String?,
-      usuarios: map['usuarios'] as int?,
     );
   }
 
@@ -110,7 +126,6 @@ class CasaDao {
       'preco': dto.preco,
       'ativa': dto.ativa ? 1 : 0,
       'descricao': dto.descricao,
-      'usuarios': dto.usuarios,
     };
   }
 }

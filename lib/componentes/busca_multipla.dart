@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/campo_busca_opcoes.dart';
 import 'package:projeto_corretora/dto/dto.dart';
 
-/// Widget reutilizável para seleção múltipla com busca.
-/// T recebe um tipo que herda de DTO e sobrescreve toString() ou implementa nome.
 class CampoBuscaMultipla<T extends DTO> extends StatefulWidget {
   final List<T> opcoes;
   final String rotulo;

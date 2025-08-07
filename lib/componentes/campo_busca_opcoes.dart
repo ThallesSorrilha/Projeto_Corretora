@@ -33,10 +33,17 @@ class _CampoBuscaOpcoesState<T extends DTO> extends State<CampoBuscaOpcoes<T>> {
   @override
   void initState() {
     super.initState();
-    _opcoesFiltradas = List.from(widget.opcoes);
     _selecionado = widget.valorSelecionado;
     if (_selecionado != null) {
       _controller.text = _selecionado!.nome;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CampoBuscaOpcoes<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.opcoes != widget.opcoes) {
+      _opcoesFiltradas = List.from(widget.opcoes);
     }
   }
 
@@ -61,6 +68,15 @@ class _CampoBuscaOpcoesState<T extends DTO> extends State<CampoBuscaOpcoes<T>> {
 
   @override
   Widget build(BuildContext context) {
+    _opcoesFiltradas =
+        widget.opcoes
+            .where(
+              (item) => item.nome.toLowerCase().contains(
+                _controller.text.toLowerCase(),
+              ),
+            )
+            .toList();
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -77,7 +93,11 @@ class _CampoBuscaOpcoesState<T extends DTO> extends State<CampoBuscaOpcoes<T>> {
                     border: OutlineInputBorder(),
                   ),
                   validator: _validar,
-                  onChanged: _filtrar,
+                  onChanged: (text) {
+                    setState(() {
+                      _filtrar(text);
+                    });
+                  },
                   onTap: () => setState(() => _exibirSugestoes = true),
                 ),
               ),

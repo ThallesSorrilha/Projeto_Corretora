@@ -81,13 +81,18 @@ class _FormCasaState extends State<FormCasa> {
     final formValido = _formKey.currentState?.validate() ?? false;
     if (formValido) {
       if (_cidadesSelecionadas == null || _cidadesSelecionadas!.id == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, selecione uma cidade válida!')),
-      );
-      return;
-    }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Por favor, selecione uma cidade válida!'),
+          ),
+        );
+        return;
+      }
 
       try {
+        final List<int> pessoasIds =
+            _pessoasSelecionadas?.map((p) => p.id!).toList() ?? [];
+
         final casa = CasaDTO(
           nome: _nomeController.text.trim(),
           cidadeId: _cidadesSelecionadas!.id!,
@@ -110,8 +115,9 @@ class _FormCasaState extends State<FormCasa> {
               _descricaoController.text.trim().isEmpty
                   ? null
                   : _descricaoController.text.trim(),
-          usuarios: null,
+          pessoasIds: pessoasIds, // Passa a lista de IDs
         );
+
         await CasaDao().salvar(casa);
 
         ScaffoldMessenger.of(context).showSnackBar(
