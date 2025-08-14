@@ -3,6 +3,7 @@ import 'package:projeto_corretora/componentes/card_casa.dart';
 import 'package:projeto_corretora/componentes/layout.dart';
 import 'package:projeto_corretora/dao/dao_casa.dart';
 import 'package:projeto_corretora/dto/dto_casa.dart';
+import 'package:projeto_corretora/telas/detalhes_casa.dart';
 
 class BuscaCasa extends StatefulWidget {
   const BuscaCasa({Key? key}) : super(key: key);
@@ -56,7 +57,17 @@ class _BuscaCasaState extends State<BuscaCasa> {
               itemCount: _listaCasas.length,
               itemBuilder: (context, index) {
                 final casa = _listaCasas[index];
-                return CardCasa(casa: casa);
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetalhesCasa(casa: casa),
+                      ),
+                    );
+                  },
+                  child: CardCasa(casa: casa),
+                );
               },
             ),
           ),
