@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_corretora/componentes/card_casa.dart';
+import 'package:projeto_corretora/componentes/layout.dart';
 import 'package:projeto_corretora/dao/dao_casa.dart';
 import 'package:projeto_corretora/dto/dto_casa.dart';
 
@@ -33,27 +34,34 @@ class _BuscaCasaState extends State<BuscaCasa> {
       setState(() {
         _isLoading = false;
       });
-      // Opcional: mostrar um SnackBar ou diálogo de erro
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Casas Disponíveis')),
-      body:
-          _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : _listaCasas.isEmpty
-              ? const Center(child: Text('Nenhuma casa encontrada.'))
-              : ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                itemCount: _listaCasas.length,
-                itemBuilder: (context, index) {
-                  final casa = _listaCasas[index];
-                  return CardCasa(casa: casa);
-                },
-              ),
+    return Layout(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Casas encontradas',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              itemCount: _listaCasas.length,
+              itemBuilder: (context, index) {
+                final casa = _listaCasas[index];
+                return CardCasa(casa: casa);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
