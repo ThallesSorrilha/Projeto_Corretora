@@ -14,6 +14,9 @@ class Conexao {
     try {
       if (kIsWeb) {
         databaseFactory = databaseFactoryFfiWeb;
+
+        await databaseFactory.deleteDatabase('projeto_corretora_web.db'); ////
+
         _db = await databaseFactory.openDatabase('projeto_corretora_web.db');
         for (final comando in criarTabelasWeb) {
           await _db!.execute(comando);
@@ -22,7 +25,7 @@ class Conexao {
         final dbPath = await getDatabasesPath();
         final path = p.join(dbPath, 'projeto_corretora.db');
 
-        await deleteDatabase(path); ///////////////////////////
+        await deleteDatabase(path); ////
 
         _db = await openDatabase(
           path,
@@ -37,7 +40,7 @@ class Conexao {
       }
 
       for (final sql in popularBancoDeDados) {
-        await _db!.rawInsert(sql);
+        await _db!.rawInsert(sql); ////
       }
 
       return _db!;

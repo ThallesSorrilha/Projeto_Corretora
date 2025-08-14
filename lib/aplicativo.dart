@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_corretora/telas/busca_casa.dart';
 import 'package:projeto_corretora/telas/form_cidade.dart';
 import 'package:projeto_corretora/telas/form_estado.dart';
 import 'configuracao/rotas.dart';
@@ -22,7 +23,7 @@ class Aplicativo extends StatelessWidget {
         Rotas.cadastrarUsuario: (context) => const FormPessoa(),
         Rotas.usuario: (context) => const WidgetMenu(),
         Rotas.logout: (context) => const WidgetMenu(),
-        Rotas.buscarCasa: (context) => const WidgetMenu(),
+        Rotas.buscarCasa: (context) => const BuscaCasa(),
         Rotas.cadastrarCasa: (context) => const FormCasa(),
         Rotas.cadastrarEstado: (context) => const FormEstado(),
         Rotas.cadastrarCidade: (context) => const FormCidade(),
